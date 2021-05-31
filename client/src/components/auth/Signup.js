@@ -17,7 +17,7 @@ import * as yup from "yup";
 import { connect } from "react-redux";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm, Controller } from "react-hook-form";
-import { signup } from "../../actions/auth";
+import { signup } from "../../actions/auth/index";
 
 const Copyright = () => {
   return (
@@ -50,6 +50,9 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
+  loginNavigationLink: {
+    textDecoration: "none",
+  },
 }));
 
 const useSignupFormValidation = () => {
@@ -70,7 +73,7 @@ const useSignupFormValidation = () => {
   });
 };
 
-const Signup = () => {
+const Signup = (props) => {
   const classes = useStyles();
   const history = useHistory();
   const schema = useSignupFormValidation();
@@ -89,7 +92,8 @@ const Signup = () => {
   });
 
   const onSubmit = (data) => {
-    signup(data, history);
+    debugger;
+    props.signup(data, history);
   };
 
   return (
@@ -196,8 +200,8 @@ const Signup = () => {
               </Link>
             </Grid>
             <Grid item>
-              <Link to="/login" variant="body2">
-                {"Already have an account ? Login..."}
+              <Link to="/login" className={classes.loginNavigationLink}>
+                {"Already have an account ? Login"}
               </Link>
             </Grid>
           </Grid>

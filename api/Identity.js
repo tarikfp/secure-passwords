@@ -1,21 +1,21 @@
-const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
+const express = require("express");
+const Identity = require("../models/Identity");
+const auth = require("../middleware/auth");
+const router = express.Router();
 
-let Identity;
-
-const IdentitySchema = new Schema({
-  title: {
-    type: String,
-    required: true,
-  },
-  idx: {
-    type: String,
-    required: true,
-  },
-  password: {
-    type: String,
-    required: true,
-  },
+router.post("/addidentity", auth, async (req, res) => {
+  try {
+    const { password, title } = req.body;
+    const { password: hashedPw, idx } = encrypt(password);
+    const identity = new Identity({ title, password: hashedPw, idx });
+    await identity.save();
+    return res.json({ msg: "success" });
+  } catch (err) {
+    return res.status(500).send();
+  }
 });
 
-module.exports = Identity = mongoose.model("identity", IdentitySchema);
+//@TODO get identity from mongo db
+router.get("/getidentity", auth, (req, res) => {});
+
+module.exports = router;

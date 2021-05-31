@@ -11,13 +11,16 @@ import {
 import Axios from "../../services/axios/index";
 import setAuthToken from "../../services/auth/setAuthToken";
 import { toast } from "react-toastify";
+import { serverURL } from "../../infrastructure/ServerConfig";
 
 // Signup User
 
 export const signup = (data, history) => async (dispatch) => {
   const { name, surname, email, password } = data;
   try {
-    const res = await Axios.post(`/api/user/register`, {
+    debugger;
+
+    const res = await Axios.post(`${serverURL}/user/register`, {
       name,
       surname,
       email,

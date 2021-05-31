@@ -50,6 +50,9 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
+  signupNavigationLink: {
+    textDecoration: "none",
+  },
 }));
 
 const useLoginFormValidation = () => {
@@ -154,7 +157,7 @@ const Login = () => {
               </Link>
             </Grid>
             <Grid item>
-              <Link to="/signup" variant="body2">
+              <Link to="/signup" className={classes.signupNavigationLink}>
                 {"Don't have an account? Sign Up"}
               </Link>
             </Grid>
