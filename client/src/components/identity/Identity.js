@@ -173,9 +173,10 @@ const Identity = ({ auth, logout, identity: { loading, items } }) => {
                   Your Current Identities
                 </Typography>
                 <div>
-                  {items.map((x) => (
-                    <IdentityItem id={x.id} text={x.title} />
-                  ))}
+                  {items &&
+                    items.map((x) => (
+                      <IdentityItem id={x._id} text={x.title} />
+                    ))}
                 </div>
               </Paper>
             </Grid>

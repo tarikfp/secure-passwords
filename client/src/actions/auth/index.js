@@ -58,7 +58,6 @@ export const login = (data, history) => async (dispatch) => {
     history.push("/identity");
     return res;
   } catch (err) {
-    console.log(err);
     const errors = err.response?.data?.errors;
     if (errors) {
       errors.forEach((error) =>

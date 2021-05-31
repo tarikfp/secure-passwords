@@ -24,6 +24,9 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: 345,
     maxHeight: 500,
   },
+  form: {
+    width: "100%",
+  },
   media: {
     height: 0,
     paddingTop: "56.25%",
@@ -71,6 +74,7 @@ const CreateIdentityCard = ({ createIdentity }) => {
     handleSubmit,
     control,
     formState: { errors },
+    reset,
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
@@ -79,10 +83,19 @@ const CreateIdentityCard = ({ createIdentity }) => {
     },
   });
   const [expanded, setExpanded] = React.useState(false);
+  React.useEffect(() => {
+    if (!expanded) {
+      // Clear form when card is closed
+      reset();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [expanded]);
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
-  const onSubmit = (data) => createIdentity(data);
+  const onSubmit = (data) => {
+    createIdentity(data);
+  };
 
   return (
     <Card className={classes.root}>
@@ -100,7 +113,7 @@ const CreateIdentityCard = ({ createIdentity }) => {
           <form onSubmit={handleSubmit(onSubmit)} className={classes.form}>
             <Controller
               control={control}
-              name="email"
+              name="title"
               render={({ field }) => (
                 <TextField
                   variant="outlined"
@@ -130,8 +143,8 @@ const CreateIdentityCard = ({ createIdentity }) => {
                   label="Password"
                   name="password"
                   autoComplete="password"
-                  helperText={errors.title?.message}
-                  error={!!errors.title?.message}
+                  helperText={errors.password?.message}
+                  error={!!errors.password?.message}
                   autoFocus
                   {...field}
                 />

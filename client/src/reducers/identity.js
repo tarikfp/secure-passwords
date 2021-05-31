@@ -32,7 +32,7 @@ export default function stateManagement(state = initialState, action) {
     case CREATE_IDENTITY:
       return {
         ...state,
-        items: [payload.data, ...state.items],
+        items: [payload, ...state.items],
         loading: false,
       };
     case DELETE_IDENTITY:

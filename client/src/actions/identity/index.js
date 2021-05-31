@@ -19,9 +19,9 @@ export const createIdentity = (data) => async (dispatch) => {
     });
     dispatch({
       type: CREATE_IDENTITY,
+      payload: res.data,
     });
     toast.success("Identity successfully created", { position: "top-center" });
-    return res;
   } catch (err) {
     const errors = err.response?.data?.errors;
     if (errors) {
