@@ -15,14 +15,13 @@ import { toast } from "react-toastify";
 // Signup User
 
 export const signup = (data, history) => async (dispatch) => {
-  const { name, surname, username, email, password } = data;
+  const { name, surname, email, password } = data;
   try {
     const res = await Axios.post(`/api/user/register`, {
       name,
       surname,
-      username,
-      password,
       email,
+      password,
     });
     dispatch({
       type: REGISTER_SUCCESS,
@@ -65,11 +64,11 @@ export const login = (data, history) => async (dispatch) => {
 // Load User
 
 export const loadUser = () => async (dispatch) => {
-  if (localStorage.token) {
-    setAuthToken(localStorage.token);
-  }
   try {
-    const res = await Axios.get(`/api/auth`);
+    if (localStorage.token) {
+      setAuthToken(localStorage.token);
+    }
+    const res = await Axios.get("/api/user/auth");
     dispatch({
       type: USER_LOADED,
       payload: res.data,

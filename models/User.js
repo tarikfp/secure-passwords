@@ -14,7 +14,7 @@ router.post(
     check("email", "Please provide valid e-mail").isEmail(),
     check("password", "Password is required").not().isEmpty(),
   ],
-  (req, res) => {
+  async (req, res) => {
     try {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
@@ -51,7 +51,7 @@ router.post(
     check("email", "Please provide valid e-mail").isEmail(),
     check("password", "Password is required").not().isEmpty(),
   ],
-  (req, res) => {
+  async (req, res) => {
     try {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
@@ -92,3 +92,12 @@ router.post(
     }
   }
 );
+
+router.get("/auth", auth, async (req, res) => {
+  try {
+    const user = req.user;
+    res.send(200).json(user);
+  } catch (err) {
+    res.status(500).send();
+  }
+});

@@ -39,6 +39,7 @@ export default function stateManagement(state = initialState, action) {
         ...state,
         token: payload.token,
         isAuthenticated: true,
+        user: payload.payload,
         loading: false,
       };
     case SET_LOADING:
