@@ -178,10 +178,6 @@ const Signup = (props) => {
               />
             )}
           />
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
-          />
           <Button
             type="submit"
             fullWidth

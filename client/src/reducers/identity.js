@@ -20,7 +20,7 @@ export default function stateManagement(state = initialState, action) {
     case GET_ALL_IDENTITY:
       return {
         ...state,
-        items: payload.data,
+        items: [...payload.identities],
         loading: false,
       };
     case GET_IDENTITY:

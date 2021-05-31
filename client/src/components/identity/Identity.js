@@ -4,26 +4,24 @@ import { makeStyles } from "@material-ui/core/styles";
 import {
   CssBaseline,
   Drawer,
-  Box,
   AppBar,
   Toolbar,
-  List,
   Typography,
   Divider,
   IconButton,
-  Badge,
   Container,
   Grid,
   Paper,
-  Link,
 } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import { connect } from "react-redux";
 import { logout } from "../../actions/auth";
+import { getAllIdentity } from "../../actions/identity";
 import IdentityItem from "./IdentityItem";
 import CreateIdentityCard from "./CreateIdentityCard";
+import { CustomLinearProgress } from "../Layout/Progress";
 
 const drawerWidth = 240;
 
@@ -106,9 +104,17 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Identity = ({ auth, logout, identity: { loading, items } }) => {
+const Identity = ({
+  auth,
+  logout,
+  getAllIdentity,
+  identity: { loading: fetchLoading, items },
+}) => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
+  React.useEffect(() => {
+    getAllIdentity();
+  }, []);
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -168,6 +174,7 @@ const Identity = ({ auth, logout, identity: { loading, items } }) => {
         <Container maxWidth="lg" className={classes.container}>
           <Grid container spacing={2}>
             <Grid item xs={9}>
+              {fetchLoading && <CustomLinearProgress loading={fetchLoading} />}
               <Paper className={classes.paper}>
                 <Typography align="center" variant="h6">
                   Your Current Identities
@@ -195,4 +202,4 @@ const mapStateToProps = ({ auth, identity }) => ({
   identity,
 });
 
-export default connect(mapStateToProps, { logout })(Identity);
+export default connect(mapStateToProps, { logout, getAllIdentity })(Identity);

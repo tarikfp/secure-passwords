@@ -95,6 +95,7 @@ const CreateIdentityCard = ({ createIdentity }) => {
   };
   const onSubmit = (data) => {
     createIdentity(data);
+    reset();
   };
 
   return (
