@@ -14,7 +14,7 @@ const initialState = {
   loading: true,
 };
 
-export default function stateManagement(state = initialState, action) {
+export default function identityStateManagement(state = initialState, action) {
   const { type, payload } = action;
 
   switch (type) {

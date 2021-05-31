@@ -10,6 +10,7 @@ import {
   Grid,
   Paper,
   List,
+  Switch,
 } from "@material-ui/core";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import { connect } from "react-redux";
@@ -25,20 +26,15 @@ import { CustomLinearProgress } from "../Layout/Progress";
 import IdentityActionMenu from "./IdentityActionMenu";
 import RefreshIcon from "@material-ui/icons/Refresh";
 import IdentityEditPopover from "./IdentityEditPopover";
+import { setTheme } from "../../actions/config";
+import darkTheme from "../../theme/DarkTheme/index";
+import defaultTheme from "../../theme/DefaultTheme";
 
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
-  },
-  toolbar: {},
-  toolbarIcon: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "flex-end",
-    padding: "0 8px",
-    ...theme.mixins.toolbar,
   },
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
@@ -91,6 +87,7 @@ const useStyles = makeStyles((theme) => ({
     overflow: "auto",
   },
   container: {
+    backgroundColor: theme.palette.primary.light,
     paddingTop: theme.spacing(4),
     paddingBottom: theme.spacing(4),
   },
@@ -114,12 +111,14 @@ const Identity = ({
   updateIdentity,
   deleteIdentity,
   getAllIdentity,
+  setTheme,
   identity: { loading: fetchLoading, items },
 }) => {
   const classes = useStyles();
   const [menuAnchorEl, setMenuAnchorEl] = React.useState(null);
   const [popoverAnchorEl, setPopoverAnchorEl] = React.useState(null);
   const [selectedIdentity, setSelectedIdentity] = React.useState(null);
+  const [isDarkTheme, setDarkTheme] = React.useState(false);
   React.useEffect(() => {
     getAllIdentity();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -136,6 +135,16 @@ const Identity = ({
   };
   const handlePopoverClose = () => {
     setPopoverAnchorEl(null);
+  };
+  const handleThemeChange = () => {
+    setDarkTheme(!isDarkTheme);
+    if (!isDarkTheme) {
+      console.log("dark");
+      setTheme(darkTheme);
+    } else {
+      console.log("default");
+      setTheme(defaultTheme);
+    }
   };
 
   return (
@@ -159,7 +168,12 @@ const Identity = ({
             className={classes.title}>
             {"User " + auth.user?.name + " " + auth.user?.surname}
           </Typography>
-
+          <Switch
+            checked={isDarkTheme}
+            onChange={handleThemeChange}
+            color="primary"
+            inputProps={{ "aria-label": "primary checkbox" }}
+          />
           <IconButton onClick={() => logout()} color="inherit">
             <Typography className={classes.logoutText} variant="h6">
               Logout
@@ -229,4 +243,5 @@ export default connect(mapStateToProps, {
   getAllIdentity,
   deleteIdentity,
   updateIdentity,
+  setTheme,
 })(Identity);

@@ -16,7 +16,7 @@ const initialState = {
   user: null,
 };
 
-export default function stateManagement(state = initialState, action) {
+export default function authStateManagemenet(state = initialState, action) {
   const { type, payload } = action;
 
   switch (type) {
