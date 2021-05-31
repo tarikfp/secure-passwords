@@ -5,10 +5,14 @@ import {
   Popover,
   makeStyles,
   Typography,
+  InputAdornment,
+  IconButton,
 } from "@material-ui/core";
 import { useForm, Controller } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import VisibilityIcon from "@material-ui/icons/Visibility";
+import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
 
 const useStyles = makeStyles((theme) => ({
   content: {
@@ -28,13 +32,17 @@ const useStyles = makeStyles((theme) => ({
 
 const useCreateIdentityFormValidation = () => {
   const formValidationRequiredMessage = "Required Field";
-  const passwordLengthValidMessage = "Password must be at least 6 length";
+  const strongPasswordValidationMessage =
+    "Your Identity Password Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character";
   return yup.object().shape({
     title: yup.string().required(formValidationRequiredMessage),
     password: yup
       .string()
       .required(formValidationRequiredMessage)
-      .min(5, passwordLengthValidMessage),
+      .matches(
+        /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
+        strongPasswordValidationMessage,
+      ),
   });
 };
 
@@ -45,6 +53,7 @@ const IdentityEditPopover = ({
   updateIdentity,
 }) => {
   const classes = useStyles();
+  const [isPasswordVisible, setPasswordVisible] = React.useState(false);
   const open = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;
   const schema = useCreateIdentityFormValidation();
@@ -65,6 +74,9 @@ const IdentityEditPopover = ({
   React.useEffect(() => {
     if (anchorEl !== null) {
       setValue("title", selectedIdentity.title);
+    }
+    if (anchorEl === null) {
+      reset();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [anchorEl]);
@@ -122,7 +134,7 @@ const IdentityEditPopover = ({
                 variant="outlined"
                 margin="normal"
                 fullWidth
-                type="password"
+                type={!isPasswordVisible ? "password" : "text"}
                 id="password"
                 label="Password"
                 name="password"
@@ -130,6 +142,20 @@ const IdentityEditPopover = ({
                 helperText={errors.password?.message}
                 error={!!errors.password?.message}
                 autoFocus
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="start">
+                      <IconButton
+                        onClick={() => setPasswordVisible(!isPasswordVisible)}>
+                        {isPasswordVisible ? (
+                          <VisibilityIcon color="primary" />
+                        ) : (
+                          <VisibilityOffIcon />
+                        )}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
                 {...field}
               />
             )}

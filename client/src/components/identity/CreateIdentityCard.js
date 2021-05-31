@@ -9,6 +9,7 @@ import {
   IconButton,
   Button,
   Typography,
+  InputAdornment,
 } from "@material-ui/core";
 import { red } from "@material-ui/core/colors";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
@@ -18,6 +19,8 @@ import VpnKeyIcon from "@material-ui/icons/VpnKey";
 import { useForm, Controller } from "react-hook-form";
 import { connect } from "react-redux";
 import { createIdentity } from "../../actions/identity";
+import VisibilityIcon from "@material-ui/icons/Visibility";
+import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -57,7 +60,7 @@ const useStyles = makeStyles((theme) => ({
 
 const useCreateIdentityFormValidation = () => {
   const formValidationRequiredMessage = "Required Field";
-  const passwordLengthValidMessage =
+  const strongPasswordValidationMessage =
     "Your Identity Password Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character";
   return yup.object().shape({
     title: yup.string().required(formValidationRequiredMessage),
@@ -66,7 +69,7 @@ const useCreateIdentityFormValidation = () => {
       .required(formValidationRequiredMessage)
       .matches(
         /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
-        passwordLengthValidMessage,
+        strongPasswordValidationMessage,
       ),
   });
 };
@@ -87,6 +90,7 @@ const CreateIdentityCard = ({ createIdentity }) => {
     },
   });
   const [expanded, setExpanded] = React.useState(false);
+  const [isPasswordVisible, setPasswordVisible] = React.useState(false);
   React.useEffect(() => {
     if (!expanded) {
       // Clear form when card is closed
@@ -143,7 +147,7 @@ const CreateIdentityCard = ({ createIdentity }) => {
                   variant="outlined"
                   margin="normal"
                   fullWidth
-                  type="password"
+                  type={!isPasswordVisible ? "password" : "text"}
                   id="password"
                   label="Password"
                   name="password"
@@ -151,6 +155,22 @@ const CreateIdentityCard = ({ createIdentity }) => {
                   helperText={errors.password?.message}
                   error={!!errors.password?.message}
                   autoFocus
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="start">
+                        <IconButton
+                          onClick={() =>
+                            setPasswordVisible(!isPasswordVisible)
+                          }>
+                          {isPasswordVisible ? (
+                            <VisibilityIcon color="primary" />
+                          ) : (
+                            <VisibilityOffIcon />
+                          )}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
                   {...field}
                 />
               )}

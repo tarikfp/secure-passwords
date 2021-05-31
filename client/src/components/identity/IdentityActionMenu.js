@@ -32,7 +32,6 @@ const IdentityActionMenu = ({
   anchorEl,
   handleClose,
   selectedIdentity,
-  updateIdentity,
   deleteIdentity,
 }) => {
   return (

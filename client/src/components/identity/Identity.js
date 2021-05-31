@@ -201,7 +201,6 @@ const Identity = ({
             </Grid>
           </Grid>
           <IdentityActionMenu
-            updateIdentity={updateIdentity}
             deleteIdentity={deleteIdentity}
             anchorEl={menuAnchorEl}
             handlePopoverOpen={handlePopoverOpen}

@@ -4,8 +4,6 @@ import {
   Button,
   CssBaseline,
   TextField,
-  FormControlLabel,
-  Checkbox,
   Box,
   Typography,
   Container,
