@@ -2,11 +2,13 @@ import {
   CREATE_IDENTITY,
   DELETE_IDENTITY,
   GET_ALL_IDENTITY,
+  UPDATE_IDENTITY,
   GET_IDENTITY,
   IDENTITY_ACTION_FAIL,
 } from "./types";
 import Axios from "../../services/axios/index";
 import { toast } from "react-toastify";
+import { handleManyRequest } from "../../infrastructure/handleManyRequest";
 
 // Create Identity
 
@@ -37,11 +39,33 @@ export const createIdentity = (data) => async (dispatch) => {
 
 // Delete Identity
 
-export const deleteIdentity = (data) => async (dispatch) => {
+export const deleteIdentity = (id) => async (dispatch) => {
   try {
-    await Axios.delete(`/api/identity/${data.id}`);
+    await Axios.delete(`/api/identity/${id}`);
     dispatch({
       type: DELETE_IDENTITY,
+      payload: id,
+    });
+  } catch (err) {
+    const errors = err.response?.data?.errors;
+    if (errors) {
+      errors.forEach((error) =>
+        toast.error(error.msg, { position: "top-center" }),
+      );
+    }
+    dispatch({
+      type: IDENTITY_ACTION_FAIL,
+    });
+  }
+};
+
+// Update Identity
+
+export const updateIdentity = (data) => async (dispatch) => {
+  try {
+    await Axios.put(`/api/identity`, { data });
+    dispatch({
+      type: UPDATE_IDENTITY,
     });
   } catch (err) {
     const errors = err.response?.data?.errors;
@@ -66,6 +90,7 @@ export const getAllIdentity = () => async (dispatch) => {
       payload: res.data,
     });
   } catch (err) {
+    handleManyRequest(err.response);
     const errors = err.response?.data?.errors;
     if (errors) {
       errors.forEach((error) =>

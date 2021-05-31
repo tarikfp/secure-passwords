@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const IdentityItem = ({ text }) => {
+const IdentityItem = ({ onActionClick, identity, setSelectedIdentity }) => {
   const classes = useStyles();
 
   return (
@@ -32,9 +32,15 @@ const IdentityItem = ({ text }) => {
           <LockIcon />
         </Avatar>
       </ListItemAvatar>
-      <ListItemText primary={text} />
+      <ListItemText primary={identity.title} />
       <ListItemSecondaryAction>
-        <IconButton edge="end" aria-label="delete">
+        <IconButton
+          onClick={(e) => {
+            setSelectedIdentity(identity);
+            onActionClick(e.currentTarget);
+          }}
+          edge="end"
+          aria-label="delete">
           <InfoIcon />
         </IconButton>
       </ListItemSecondaryAction>

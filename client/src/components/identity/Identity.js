@@ -18,10 +18,16 @@ import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import { connect } from "react-redux";
 import { logout } from "../../actions/auth";
-import { getAllIdentity } from "../../actions/identity";
+import {
+  updateIdentity,
+  deleteIdentity,
+  getAllIdentity,
+} from "../../actions/identity";
 import IdentityItem from "./IdentityItem";
 import CreateIdentityCard from "./CreateIdentityCard";
 import { CustomLinearProgress } from "../Layout/Progress";
+import IdentityActionMenu from "./IdentityActionMenu";
+import RefreshIcon from "@material-ui/icons/Refresh";
 
 const drawerWidth = 240;
 
@@ -107,19 +113,30 @@ const useStyles = makeStyles((theme) => ({
 const Identity = ({
   auth,
   logout,
+  updateIdentity,
+  deleteIdentity,
   getAllIdentity,
   identity: { loading: fetchLoading, items },
 }) => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [selectedIdentity, setSelectedIdentity] = React.useState(null);
   React.useEffect(() => {
     getAllIdentity();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const handleDrawerOpen = () => {
     setOpen(true);
   };
   const handleDrawerClose = () => {
     setOpen(false);
+  };
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+  const handleMenuOpen = (target) => {
+    setAnchorEl(target);
   };
 
   return (
@@ -172,6 +189,9 @@ const Identity = ({
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>
+          <IconButton onClick={() => getAllIdentity()}>
+            <RefreshIcon />
+          </IconButton>
           <Grid container spacing={2}>
             <Grid item xs={9}>
               {fetchLoading && <CustomLinearProgress loading={fetchLoading} />}
@@ -181,8 +201,12 @@ const Identity = ({
                 </Typography>
                 <div>
                   {items &&
-                    items.map((x) => (
-                      <IdentityItem id={x._id} text={x.title} />
+                    items.map((item) => (
+                      <IdentityItem
+                        setSelectedIdentity={setSelectedIdentity}
+                        onActionClick={handleMenuOpen}
+                        identity={item}
+                      />
                     ))}
                 </div>
               </Paper>
@@ -191,6 +215,13 @@ const Identity = ({
               <CreateIdentityCard />
             </Grid>
           </Grid>
+          <IdentityActionMenu
+            updateIdentity={updateIdentity}
+            deleteIdentity={deleteIdentity}
+            anchorEl={anchorEl}
+            selectedIdentity={selectedIdentity}
+            handleClose={handleMenuClose}
+          />
         </Container>
       </main>
     </div>
@@ -202,4 +233,9 @@ const mapStateToProps = ({ auth, identity }) => ({
   identity,
 });
 
-export default connect(mapStateToProps, { logout, getAllIdentity })(Identity);
+export default connect(mapStateToProps, {
+  logout,
+  getAllIdentity,
+  deleteIdentity,
+  updateIdentity,
+})(Identity);

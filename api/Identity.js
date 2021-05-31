@@ -21,7 +21,6 @@ router.post("/", [auth, bruteforce.prevent], async (req, res) => {
     await identity.save();
     return res.status(200).json(identity);
   } catch (err) {
-    console.log(err);
     return res.status(500).json(err);
   }
 });
@@ -47,14 +46,14 @@ router.put("/", [auth, bruteforce.prevent], async (req, res) => {
   }
 });
 
-router.delete("/", [auth, bruteforce.prevent], async (req, res) => {
+router.delete("/:id", [auth, bruteforce.prevent], async (req, res) => {
   try {
     const id = req.params.id;
-    let foundIdentity = await Identity.findOne({ id });
+    let foundIdentity = await Identity.findOne({ _id: id });
     if (!foundIdentity) {
       return res.status(404).json({ errors: [{ msg: "No Identity Found !" }] });
     }
-    await Identity.findOneAndDelete({ id });
+    await Identity.findOneAndDelete({ _id: id });
     return res.status(200).send();
   } catch (err) {
     return res.status(500).send();
