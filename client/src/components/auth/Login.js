@@ -1,6 +1,5 @@
 import React from "react";
 import {
-  Avatar,
   Button,
   CssBaseline,
   TextField,
@@ -20,6 +19,7 @@ import { setTheme } from "../../actions/config";
 import defaultTheme from "../../theme/DefaultTheme";
 import darkTheme from "../../theme/DarkTheme";
 import Brightness4Icon from "@material-ui/icons/Brightness4";
+import VpnKeyIcon from "@material-ui/icons/VpnKey";
 
 const Copyright = () => {
   return (
@@ -43,7 +43,6 @@ const useStyles = makeStyles((theme) => ({
   },
   avatar: {
     margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
   },
   form: {
     width: "100%",
@@ -118,7 +117,7 @@ const Login = ({ login, setTheme }) => {
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       <div className={classes.paper}>
-        <Avatar className={classes.avatar}></Avatar>
+        <VpnKeyIcon fontSize="large" className={classes.avatar} />
         <Typography component="h1" variant="h5">
           Login
         </Typography>

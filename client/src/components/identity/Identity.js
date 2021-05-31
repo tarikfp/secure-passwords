@@ -146,7 +146,9 @@ const Identity = ({
             color="inherit"
             noWrap
             className={classes.title}>
-            {"User " + auth.user?.name + " " + auth.user?.surname}
+            {auth.user?.name && auth.user?.surname
+              ? "User " + auth.user?.name + " " + auth.user?.surname
+              : ""}
           </Typography>
           <Brightness4Icon />
           <Switch
@@ -165,8 +167,9 @@ const Identity = ({
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>
-          <IconButton onClick={() => getAllIdentity()}>
+          <IconButton onClick={() => getAllIdentity(true)}>
             <RefreshIcon fontSize="large" color="primary" />
+            <Typography variant="h6">Refresh</Typography>
           </IconButton>
           <Grid container spacing={2}>
             <Grid item xs={9}>

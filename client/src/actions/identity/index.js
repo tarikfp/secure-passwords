@@ -101,10 +101,15 @@ export const updateIdentity = (data) => async (dispatch) => {
 
 // Get All Identities
 
-export const getAllIdentity = () => async (dispatch) => {
+export const getAllIdentity = (isRefresh) => async (dispatch) => {
   try {
     const res = await Axios.get("/api/identity/identity");
     dispatch(setIdentityLoading());
+    if (res && isRefresh) {
+      toast.success("Identity list successfully refreshed", {
+        position: "top-center",
+      });
+    }
     dispatch({
       type: GET_ALL_IDENTITY,
       payload: res.data,
