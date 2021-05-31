@@ -5,6 +5,7 @@ import {
   UPDATE_IDENTITY,
   GET_IDENTITY,
   IDENTITY_ACTION_FAIL,
+  SET_LOADING,
 } from "./types";
 import Axios from "../../services/axios/index";
 import { toast } from "react-toastify";
@@ -46,6 +47,7 @@ export const deleteIdentity = (id) => async (dispatch) => {
       type: DELETE_IDENTITY,
       payload: id,
     });
+    toast.success("Identity successfully deleted", { position: "top-center" });
   } catch (err) {
     const errors = err.response?.data?.errors;
     if (errors) {
@@ -85,6 +87,7 @@ export const updateIdentity = (data) => async (dispatch) => {
 export const getAllIdentity = () => async (dispatch) => {
   try {
     const res = await Axios.get("/api/identity/identity");
+    dispatch(setIdentityLoading());
     dispatch({
       type: GET_ALL_IDENTITY,
       payload: res.data,
@@ -123,4 +126,12 @@ export const getIdentity = (data) => async (dispatch) => {
       type: IDENTITY_ACTION_FAIL,
     });
   }
+};
+
+// Refresh Loading
+
+export const setIdentityLoading = () => async (dispatch) => {
+  dispatch({
+    type: SET_LOADING,
+  });
 };

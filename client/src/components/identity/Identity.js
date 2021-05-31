@@ -12,6 +12,7 @@ import {
   Container,
   Grid,
   Paper,
+  List,
 } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
@@ -181,16 +182,12 @@ const Identity = ({
             <ChevronLeftIcon />
           </IconButton>
         </div>
-        <Divider />
-        {/* <List>{mainListItems}</List> */}
-        <Divider />
-        {/* <List>{secondaryListItems}</List> */}
       </Drawer>
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>
           <IconButton onClick={() => getAllIdentity()}>
-            <RefreshIcon />
+            <RefreshIcon fontSize="large" color="primary" />
           </IconButton>
           <Grid container spacing={2}>
             <Grid item xs={9}>
@@ -200,14 +197,17 @@ const Identity = ({
                   Your Current Identities
                 </Typography>
                 <div>
-                  {items &&
-                    items.map((item) => (
-                      <IdentityItem
-                        setSelectedIdentity={setSelectedIdentity}
-                        onActionClick={handleMenuOpen}
-                        identity={item}
-                      />
-                    ))}
+                  <List>
+                    {items &&
+                      items.map((item) => (
+                        <IdentityItem
+                          key={item._id}
+                          setSelectedIdentity={setSelectedIdentity}
+                          onActionClick={handleMenuOpen}
+                          identity={item}
+                        />
+                      ))}
+                  </List>
                 </div>
               </Paper>
             </Grid>

@@ -4,6 +4,7 @@ import {
   GET_IDENTITY,
   CREATE_IDENTITY,
   SET_LOADING,
+  UPDATE_IDENTITY,
 } from "../actions/identity/types";
 
 const initialState = {
@@ -35,10 +36,24 @@ export default function stateManagement(state = initialState, action) {
         items: [payload, ...state.items],
         loading: false,
       };
+    case UPDATE_IDENTITY:
+      return {
+        ...state,
+        items: state.items.map((item) =>
+          item._id === payload._id
+            ? {
+                ...item,
+                title: payload.name,
+                password: payload.description,
+              }
+            : item,
+        ),
+        loading: false,
+      };
     case DELETE_IDENTITY:
       return {
         ...state,
-        items: state.items.filter((x) => x.id !== payload.id),
+        items: state.items.filter((x) => x._id !== payload),
         loading: false,
       };
     case SET_LOADING:
