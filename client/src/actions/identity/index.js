@@ -60,7 +60,7 @@ export const deleteIdentity = (data) => async (dispatch) => {
 
 export const getAllIdentity = () => async (dispatch) => {
   try {
-    const res = await Axios.get("/api/identity");
+    const res = await Axios.get("/api/identity/identity");
     dispatch({
       type: GET_ALL_IDENTITY,
       payload: res.data,
@@ -82,7 +82,7 @@ export const getAllIdentity = () => async (dispatch) => {
 
 export const getIdentity = (data) => async (dispatch) => {
   try {
-    const res = await Axios.get(`/api/identity${data.id}`);
+    const res = await Axios.get(`/api/identity/identity/${data.id}`);
     dispatch({
       type: GET_IDENTITY,
       payload: res.data,

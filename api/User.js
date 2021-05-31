@@ -3,9 +3,11 @@ const router = express.Router();
 const { check, validationResult } = require("express-validator");
 const jwt = require("jsonwebtoken");
 const config = require("config");
-const bcrypt = require("bcryptjs");
 const User = require("../models/User");
 const auth = require("../middleware/auth");
+const { generateSalt } = require("../custom-services/Salter");
+const { hash } = require("../custom-services/Hash");
+const { compare } = require("../custom-services/Compare");
 
 router.post(
   "/register",
@@ -16,7 +18,6 @@ router.post(
     check("password", "Password is required").not().isEmpty(),
   ],
   async (req, res) => {
-    console.log(req.body);
     try {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
@@ -30,17 +31,19 @@ router.post(
           .status(400)
           .json({ errors: [{ msg: "User Already Exists With That E-Mail" }] });
       }
-      const salt = await bcrypt.genSalt(10);
-      let hashedPassword = await bcrypt.hash(password, salt);
+      const salt = generateSalt(10);
+      let hashedPassword = await hash(password, salt);
       user = new User({
         name,
         surname,
         email,
-        password: hashedPassword,
+        password: hashedPassword.hashedpassword,
+        salt: hashedPassword.salt,
       });
       await user.save();
       return res.status(200).send();
     } catch (err) {
+      console.log(err);
       return res.status(500).send();
     }
   }
@@ -69,7 +72,10 @@ router.post(
           .json({ errors: [{ msg: "Invalid Credentials" }] });
       }
       // Check if the password is true
-      const isMatch = await bcrypt.compare(password, user.password);
+      const isMatch = await compare(password, {
+        salt: user.salt,
+        hashedpassword: user.password,
+      });
       // User not found with the given password
       if (!isMatch) {
         return res
@@ -90,6 +96,7 @@ router.post(
       await user.save();
       res.status(200).json({ token });
     } catch (err) {
+      console.log(err);
       return res.status(500).send();
     }
   }

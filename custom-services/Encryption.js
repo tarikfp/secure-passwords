@@ -11,6 +11,12 @@ const secret = config.get("secret.crypto");
 const encrypt = (password) => {
   // function which take password param to be encrypted
   const idx = Buffer.from(crypto.randomBytes(16));
+  /*   let idx = crypto
+    .createHash("sha256")
+    .update(String(secret))
+    .digest("base64")
+    .substr(0, 16); */
+
   // idx is identifier for encryption
   const cipher = crypto.createCipheriv("aes-256-ctr", Buffer.from(secret), idx);
 
