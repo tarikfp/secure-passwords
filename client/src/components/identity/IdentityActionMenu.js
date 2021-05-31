@@ -1,11 +1,9 @@
 import React from "react";
 import { withStyles } from "@material-ui/core/styles";
-import Button from "@material-ui/core/Button";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import InboxIcon from "@material-ui/icons/MoveToInbox";
 import DraftsIcon from "@material-ui/icons/Drafts";
 import SendIcon from "@material-ui/icons/Send";
 
@@ -41,6 +39,7 @@ const StyledMenuItem = withStyles((theme) => ({
 }))(MenuItem);
 
 const IdentityActionMenu = ({
+  handlePopoverOpen,
   anchorEl,
   handleClose,
   selectedIdentity,
@@ -48,31 +47,33 @@ const IdentityActionMenu = ({
   deleteIdentity,
 }) => {
   return (
-    <div>
-      <StyledMenu
-        id="customized-menu"
-        anchorEl={anchorEl}
-        keepMounted
-        open={Boolean(anchorEl)}
-        onClose={handleClose}>
-        <StyledMenuItem>
-          <ListItemIcon>
-            <SendIcon fontSize="small" />
-          </ListItemIcon>
-          <ListItemText primary="Edit Identity" />
-        </StyledMenuItem>
-        <StyledMenuItem
-          onClick={() => {
-            handleClose();
-            deleteIdentity(selectedIdentity._id);
-          }}>
-          <ListItemIcon>
-            <DraftsIcon fontSize="small" />
-          </ListItemIcon>
-          <ListItemText primary="Delete Identity" />
-        </StyledMenuItem>
-      </StyledMenu>
-    </div>
+    <StyledMenu
+      id="customized-menu"
+      anchorEl={anchorEl}
+      keepMounted
+      open={Boolean(anchorEl)}
+      onClose={handleClose}>
+      <StyledMenuItem
+        onClick={(e) => {
+          handlePopoverOpen(e.currentTarget);
+          handleClose();
+        }}>
+        <ListItemIcon>
+          <SendIcon fontSize="small" />
+        </ListItemIcon>
+        <ListItemText primary="Edit Identity" />
+      </StyledMenuItem>
+      <StyledMenuItem
+        onClick={() => {
+          handleClose();
+          deleteIdentity(selectedIdentity._id);
+        }}>
+        <ListItemIcon>
+          <DraftsIcon fontSize="small" />
+        </ListItemIcon>
+        <ListItemText primary="Delete Identity" />
+      </StyledMenuItem>
+    </StyledMenu>
   );
 };
 

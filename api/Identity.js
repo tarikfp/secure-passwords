@@ -27,21 +27,21 @@ router.post("/", [auth, bruteforce.prevent], async (req, res) => {
 
 router.put("/", [auth, bruteforce.prevent], async (req, res) => {
   try {
-    const { id, password, title } = req.body;
-    let foundIdentity = Identity.findOne({ id });
+    const { id, password, title, salt: identitySalt } = req.body;
+    let foundIdentity = Identity.findOne({ _id: id, salt: identitySalt });
     if (!foundIdentity) {
       return res.status(404).json({ errors: [{ msg: "No Identity Found !" }] });
     }
     const salt = generateSalt(10);
-    const hashedPassword = await hash(password, salt);
+    const hashedPassword = hash(password, salt);
     const updatedIdentity = await Identity.findOneAndUpdate(
-      { id },
-      { salt, password: hashedPassword, title },
+      { _id: id },
+      { salt: hashedPassword.salt, password: hashedPassword.password, title },
       { new: true }
     );
-    res.status(200).json({ updatedIdentity });
-    return res.status(200).send();
+    return res.status(200).json(updatedIdentity);
   } catch (err) {
+    console.log(err);
     return res.status(500).send();
   }
 });

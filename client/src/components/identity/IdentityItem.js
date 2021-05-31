@@ -47,7 +47,6 @@ const IdentityItem = ({ onActionClick, identity, setSelectedIdentity }) => {
           <InfoIcon />
         </IconButton>
       </ListItemSecondaryAction>
-      <Divider />
     </ListItem>
   );
 };

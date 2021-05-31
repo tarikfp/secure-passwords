@@ -31,6 +31,8 @@ export const createIdentity = (data) => async (dispatch) => {
       errors.forEach((error) =>
         toast.error(error.msg, { position: "top-center" }),
       );
+    } else {
+      toast.error("An Error Occured", { position: "top-center" });
     }
     dispatch({
       type: IDENTITY_ACTION_FAIL,
@@ -54,6 +56,8 @@ export const deleteIdentity = (id) => async (dispatch) => {
       errors.forEach((error) =>
         toast.error(error.msg, { position: "top-center" }),
       );
+    } else {
+      toast.error("An Error Occured", { position: "top-center" });
     }
     dispatch({
       type: IDENTITY_ACTION_FAIL,
@@ -65,16 +69,20 @@ export const deleteIdentity = (id) => async (dispatch) => {
 
 export const updateIdentity = (data) => async (dispatch) => {
   try {
-    await Axios.put(`/api/identity`, { data });
+    const res = await Axios.put(`/api/identity`, data);
     dispatch({
       type: UPDATE_IDENTITY,
+      payload: res.data,
     });
+    toast.success("Identity successfully updated", { position: "top-center" });
   } catch (err) {
     const errors = err.response?.data?.errors;
     if (errors) {
       errors.forEach((error) =>
         toast.error(error.msg, { position: "top-center" }),
       );
+    } else {
+      toast.error("An Error Occured", { position: "top-center" });
     }
     dispatch({
       type: IDENTITY_ACTION_FAIL,
@@ -99,6 +107,8 @@ export const getAllIdentity = () => async (dispatch) => {
       errors.forEach((error) =>
         toast.error(error.msg, { position: "top-center" }),
       );
+    } else {
+      toast.error("An Error Occured", { position: "top-center" });
     }
     dispatch({
       type: IDENTITY_ACTION_FAIL,
@@ -121,6 +131,8 @@ export const getIdentity = (data) => async (dispatch) => {
       errors.forEach((error) =>
         toast.error(error.msg, { position: "top-center" }),
       );
+    } else {
+      toast.error("An Error Occured", { position: "top-center" });
     }
     dispatch({
       type: IDENTITY_ACTION_FAIL,

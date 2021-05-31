@@ -13,6 +13,7 @@ import {
   Grid,
   Paper,
   List,
+  Popover,
 } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
@@ -29,6 +30,7 @@ import CreateIdentityCard from "./CreateIdentityCard";
 import { CustomLinearProgress } from "../Layout/Progress";
 import IdentityActionMenu from "./IdentityActionMenu";
 import RefreshIcon from "@material-ui/icons/Refresh";
+import IdentityEditPopover from "./IdentityEditPopover";
 
 const drawerWidth = 240;
 
@@ -121,7 +123,8 @@ const Identity = ({
 }) => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [menuAnchorEl, setMenuAnchorEl] = React.useState(null);
+  const [popoverAnchorEl, setPopoverAnchorEl] = React.useState(null);
   const [selectedIdentity, setSelectedIdentity] = React.useState(null);
   React.useEffect(() => {
     getAllIdentity();
@@ -134,10 +137,16 @@ const Identity = ({
     setOpen(false);
   };
   const handleMenuClose = () => {
-    setAnchorEl(null);
+    setMenuAnchorEl(null);
   };
   const handleMenuOpen = (target) => {
-    setAnchorEl(target);
+    setMenuAnchorEl(target);
+  };
+  const handlePopoverOpen = (target) => {
+    setPopoverAnchorEl(target);
+  };
+  const handlePopoverClose = () => {
+    setPopoverAnchorEl(null);
   };
 
   return (
@@ -218,9 +227,16 @@ const Identity = ({
           <IdentityActionMenu
             updateIdentity={updateIdentity}
             deleteIdentity={deleteIdentity}
-            anchorEl={anchorEl}
+            anchorEl={menuAnchorEl}
+            handlePopoverOpen={handlePopoverOpen}
             selectedIdentity={selectedIdentity}
             handleClose={handleMenuClose}
+          />
+          <IdentityEditPopover
+            selectedIdentity={selectedIdentity}
+            anchorEl={popoverAnchorEl}
+            handleClose={handlePopoverClose}
+            updateIdentity={updateIdentity}
           />
         </Container>
       </main>

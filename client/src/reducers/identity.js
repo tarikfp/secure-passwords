@@ -43,8 +43,8 @@ export default function stateManagement(state = initialState, action) {
           item._id === payload._id
             ? {
                 ...item,
-                title: payload.name,
-                password: payload.description,
+                title: payload.title,
+                password: payload.password,
               }
             : item,
         ),
