@@ -7,20 +7,16 @@ import {
   REGISTER_SUCCESS,
   USER_LOADED,
 } from "./types";
-
 import Axios from "../../services/axios/index";
 import setAuthToken from "../../services/auth/setAuthToken";
 import { toast } from "react-toastify";
-import { serverURL } from "../../infrastructure/ServerConfig";
 
 // Signup User
 
 export const signup = (data, history) => async (dispatch) => {
   const { name, surname, email, password } = data;
   try {
-    debugger;
-
-    const res = await Axios.post(`${serverURL}/user/register`, {
+    const res = await Axios.post(`api/user/register`, {
       name,
       surname,
       email,
@@ -30,10 +26,15 @@ export const signup = (data, history) => async (dispatch) => {
       type: REGISTER_SUCCESS,
     });
     history.push("/login");
-    toast("Successfully Registered", { position: "top-center" });
+    toast.success("Successfully Registered", { position: "top-center" });
     return res;
   } catch (err) {
-    toast("An error occured", { position: "top-center" });
+    const errors = err.response?.data?.errors;
+    if (errors) {
+      errors.forEach((error) =>
+        toast.error(error.msg, { position: "top-center" }),
+      );
+    }
     dispatch({
       type: REGISTER_FAIL,
     });
@@ -49,7 +50,6 @@ export const login = (data, history) => async (dispatch) => {
       email,
       password,
     });
-    debugger;
     dispatch({
       type: LOGIN_SUCCESS,
       payload: res.data,
@@ -58,7 +58,13 @@ export const login = (data, history) => async (dispatch) => {
     history.push("/");
     return res;
   } catch (err) {
-    toast("An error occured", { position: "top-center" });
+    console.log(err);
+    const errors = err.response?.data?.errors;
+    if (errors) {
+      errors.forEach((error) =>
+        toast.error(error.msg, { position: "top-center" }),
+      );
+    }
     dispatch({
       type: LOGIN_FAIL,
     });
@@ -78,7 +84,12 @@ export const loadUser = () => async (dispatch) => {
       payload: res.data,
     });
   } catch (err) {
-    toast("An error occured", { position: "top-center" });
+    const errors = err.response?.data?.errors;
+    if (errors) {
+      errors.forEach((error) =>
+        toast.error(error.msg, { position: "top-center" }),
+      );
+    }
     dispatch({
       type: AUTH_ERROR,
     });

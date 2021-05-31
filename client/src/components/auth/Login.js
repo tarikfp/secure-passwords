@@ -23,7 +23,7 @@ const Copyright = () => {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
       {"Copyright ©"}
-      <Link color="inherit" href="https://www.linkedin.com/in/tarik-pinarci/">
+      <Link color="inherit" to="https://www.linkedin.com/in/tarik-pinarci/">
         Tarik Pinarci
       </Link>{" "}
       {new Date().getFullYear()}
@@ -71,7 +71,7 @@ const useLoginFormValidation = () => {
   });
 };
 
-const Login = () => {
+const Login = (props) => {
   const classes = useStyles();
   const history = useHistory();
   const schema = useLoginFormValidation();
@@ -88,7 +88,7 @@ const Login = () => {
   });
 
   const onSubmit = (data) => {
-    login(data, history);
+    props.login(data, history);
   };
 
   return (
@@ -97,7 +97,7 @@ const Login = () => {
       <div className={classes.paper}>
         <Avatar className={classes.avatar}></Avatar>
         <Typography component="h1" variant="h5">
-          Sign in
+          Login
         </Typography>
         <form onSubmit={handleSubmit(onSubmit)} className={classes.form}>
           <Controller
@@ -152,7 +152,7 @@ const Login = () => {
           </Button>
           <Grid container>
             <Grid item xs>
-              <Link href="#" variant="body2">
+              <Link to="#" variant="body2">
                 Forgot password?
               </Link>
             </Grid>

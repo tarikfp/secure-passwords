@@ -5,24 +5,22 @@ import "./App.css";
 import { ToastContainer } from "react-toastify";
 import { loadUser } from "./actions/auth";
 import setAuthToken from "./services/auth/setAuthToken";
+import "react-toastify/dist/ReactToastify.css";
+
 import Routes from "./components/Routes/Routes";
 import Landing from "./components/Layout/Landing";
 
-/* if (localStorage.token) {
-  setAuthToken(localStorage.token);
-} */
 const App = () => {
-  /*   React.useEffect(() => {
-    store.dispatch(loadUser());
-  }, []); */
-
   return (
-    <Router>
-      <Switch>
-        <Route exact path="/" component={Landing} />
-        <Route component={Routes} />
-      </Switch>
-    </Router>
+    <React.Fragment>
+      <Router>
+        <Switch>
+          <Route exact path="/" component={Landing} />
+          <Route component={Routes} />
+        </Switch>
+      </Router>
+      <ToastContainer />
+    </React.Fragment>
   );
 };
 
