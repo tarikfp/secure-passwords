@@ -55,7 +55,7 @@ export const login = (data, history) => async (dispatch) => {
       payload: res.data,
     });
     dispatch(loadUser());
-    history.push("/");
+    history.push("/identity");
     return res;
   } catch (err) {
     console.log(err);

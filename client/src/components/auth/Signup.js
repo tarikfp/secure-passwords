@@ -92,7 +92,6 @@ const Signup = (props) => {
   });
 
   const onSubmit = (data) => {
-    debugger;
     props.signup(data, history);
   };
 
@@ -194,11 +193,6 @@ const Signup = (props) => {
             Signup
           </Button>
           <Grid container>
-            <Grid item xs>
-              <Link to="#" variant="body2">
-                Forgot password?
-              </Link>
-            </Grid>
             <Grid item>
               <Link to="/login" className={classes.loginNavigationLink}>
                 {"Already have an account ? Login"}
