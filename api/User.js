@@ -32,18 +32,17 @@ router.post(
           .json({ errors: [{ msg: "User Already Exists With That E-Mail" }] });
       }
       const salt = generateSalt(10);
-      let hashedPassword = await hash(password, salt);
+      const hashedPassword = await hash(password, salt);
       user = new User({
         name,
         surname,
         email,
-        password: hashedPassword.hashedpassword,
+        password: hashedPassword.password,
         salt: hashedPassword.salt,
       });
       await user.save();
       return res.status(200).send();
     } catch (err) {
-      console.log(err);
       return res.status(500).send();
     }
   }

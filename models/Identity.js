@@ -6,7 +6,7 @@ const IdentitySchema = new Schema({
     type: String,
     required: true,
   },
-  idx: {
+  salt: {
     type: String,
     required: true,
   },

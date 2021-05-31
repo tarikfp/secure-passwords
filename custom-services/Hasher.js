@@ -6,7 +6,7 @@ const hasher = (password, salt) => {
   let value = hash.digest("hex");
   return {
     salt: salt,
-    hashedpassword: value,
+    password: value,
   };
 };
 

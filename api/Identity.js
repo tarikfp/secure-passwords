@@ -1,21 +1,25 @@
 const express = require("express");
+const router = express.Router();
 const Identity = require("../models/Identity");
 const ExpressBrute = require("express-brute");
 const store = new ExpressBrute.MemoryStore();
 const bruteforce = new ExpressBrute(store);
 const auth = require("../middleware/auth");
-const { encrypt } = require("../custom-services/Encryption");
+const { generateSalt } = require("../custom-services/Salter");
+const { hash } = require("../custom-services/Hash");
 
-const router = express.Router();
-
-router.post("/", async (req, res) => {
+router.post("/", [auth, bruteforce.prevent], async (req, res) => {
   try {
     const { password, title } = req.body;
-    console.log(password);
-    const { password: hashedPw, idx } = encrypt(password);
-    const identity = new Identity({ title, password: hashedPw, idx: "2" });
+    const salt = generateSalt(10);
+    const hashedPassword = await hash(password, salt);
+    const identity = new Identity({
+      title,
+      password: hashedPassword.password,
+      salt: hashedPassword.salt,
+    });
     await identity.save();
-    return res.status(200).send();
+    return res.status(200).json(identity);
   } catch (err) {
     console.log(err);
     return res.status(500).json(err);
@@ -25,14 +29,15 @@ router.post("/", async (req, res) => {
 router.put("/", [auth, bruteforce.prevent], async (req, res) => {
   try {
     const { id, password, title } = req.body;
-    const { password: hashedPw, idx } = encrypt(password);
     let foundIdentity = Identity.findOne({ id });
     if (!foundIdentity) {
       return res.status(404).json({ errors: [{ msg: "No Identity Found !" }] });
     }
+    const salt = generateSalt(10);
+    const hashedPassword = await hash(password, salt);
     const updatedIdentity = await Identity.findOneAndUpdate(
       { id },
-      { idx, password: hashedPw, title },
+      { salt, password: hashedPassword, title },
       { new: true }
     );
     res.status(200).json({ updatedIdentity });
