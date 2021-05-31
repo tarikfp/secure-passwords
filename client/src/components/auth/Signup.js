@@ -90,10 +90,7 @@ const Signup = (props) => {
       password: "",
     },
   });
-
-  const onSubmit = (data) => {
-    props.signup(data, history);
-  };
+  const onSubmit = (data) => props.signup(data, history);
 
   return (
     <Container component="main" maxWidth="xs">

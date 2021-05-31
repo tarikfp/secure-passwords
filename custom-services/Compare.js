@@ -8,7 +8,7 @@ const compare = (password, hash) => {
     throw new Error("password must be a String and hash must be an Object");
   }
   let passwordData = hasher(password, hash.salt);
-  if (passwordData.hashedpassword === hash.hashedpassword) {
+  if (passwordData.password === hash.hashedpassword) {
     return true;
   }
   return false;

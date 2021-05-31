@@ -70,7 +70,7 @@ const useLoginFormValidation = () => {
   });
 };
 
-const Login = (props) => {
+const Login = ({ login }) => {
   const classes = useStyles();
   const history = useHistory();
   const schema = useLoginFormValidation();
@@ -85,10 +85,7 @@ const Login = (props) => {
       password: "",
     },
   });
-
-  const onSubmit = (data) => {
-    props.login(data, history);
-  };
+  const onSubmit = (data) => login(data, history);
 
   return (
     <Container component="main" maxWidth="xs">

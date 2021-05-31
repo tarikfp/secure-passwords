@@ -1,6 +1,5 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import clsx from "clsx";
 import {
   Card,
   CardHeader,
@@ -17,6 +16,8 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import VpnKeyIcon from "@material-ui/icons/VpnKey";
 import { useForm, Controller } from "react-hook-form";
+import { connect } from "react-redux";
+import { createIdentity } from "../../actions/identity";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -63,7 +64,7 @@ const useCreateIdentityFormValidation = () => {
   });
 };
 
-const CreateIdentity = () => {
+const CreateIdentityCard = ({ createIdentity }) => {
   const classes = useStyles();
   const schema = useCreateIdentityFormValidation();
   const {
@@ -81,8 +82,7 @@ const CreateIdentity = () => {
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
-
-  const onSubmit = () => {};
+  const onSubmit = (data) => createIdentity(data);
 
   return (
     <Card className={classes.root}>
@@ -159,4 +159,4 @@ const CreateIdentity = () => {
     </Card>
   );
 };
-export default CreateIdentity;
+export default connect(null, { createIdentity })(CreateIdentityCard);

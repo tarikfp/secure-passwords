@@ -32,7 +32,7 @@ router.post(
           .json({ errors: [{ msg: "User Already Exists With That E-Mail" }] });
       }
       const salt = generateSalt(10);
-      const hashedPassword = await hash(password, salt);
+      const hashedPassword = hash(password, salt);
       user = new User({
         name,
         surname,
@@ -71,7 +71,7 @@ router.post(
           .json({ errors: [{ msg: "Invalid Credentials" }] });
       }
       // Check if the password is true
-      const isMatch = await compare(password, {
+      const isMatch = compare(password, {
         salt: user.salt,
         hashedpassword: user.password,
       });

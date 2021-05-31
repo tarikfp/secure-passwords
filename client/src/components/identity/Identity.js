@@ -23,7 +23,7 @@ import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import { connect } from "react-redux";
 import { logout } from "../../actions/auth";
 import IdentityItem from "./IdentityItem";
-import CreateIdentity from "./CreateIdentity";
+import CreateIdentityCard from "./CreateIdentityCard";
 
 const drawerWidth = 240;
 
@@ -115,7 +115,6 @@ const Identity = ({ auth, logout, identity: { loading, items } }) => {
   const handleDrawerClose = () => {
     setOpen(false);
   };
-  const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
   return (
     <div className={classes.root}>
@@ -181,7 +180,7 @@ const Identity = ({ auth, logout, identity: { loading, items } }) => {
               </Paper>
             </Grid>
             <Grid item xs={3}>
-              <CreateIdentity />
+              <CreateIdentityCard />
             </Grid>
           </Grid>
         </Container>
