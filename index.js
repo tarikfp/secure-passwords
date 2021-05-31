@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const connectDB = require("./config/db");
-
+const config = require("config");
 const PORT = config.get("serverConfig.port");
 
 app.use(express.json());
