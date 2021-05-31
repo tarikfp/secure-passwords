@@ -1,22 +1,16 @@
 import React from "react";
-import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   CssBaseline,
-  Drawer,
   AppBar,
   Toolbar,
   Typography,
-  Divider,
   IconButton,
   Container,
   Grid,
   Paper,
   List,
-  Popover,
 } from "@material-ui/core";
-import MenuIcon from "@material-ui/icons/Menu";
-import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import { connect } from "react-redux";
 import { logout } from "../../actions/auth";
@@ -123,7 +117,6 @@ const Identity = ({
   identity: { loading: fetchLoading, items },
 }) => {
   const classes = useStyles();
-  const [open, setOpen] = React.useState(false);
   const [menuAnchorEl, setMenuAnchorEl] = React.useState(null);
   const [popoverAnchorEl, setPopoverAnchorEl] = React.useState(null);
   const [selectedIdentity, setSelectedIdentity] = React.useState(null);
@@ -131,12 +124,7 @@ const Identity = ({
     getAllIdentity();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
+
   const handleMenuClose = () => {
     setMenuAnchorEl(null);
   };

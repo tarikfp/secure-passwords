@@ -65,7 +65,7 @@ const useCreateIdentityFormValidation = () => {
       .string()
       .required(formValidationRequiredMessage)
       .matches(
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
+        /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
         passwordLengthValidMessage,
       ),
   });

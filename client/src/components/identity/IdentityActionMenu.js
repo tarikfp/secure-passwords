@@ -4,8 +4,8 @@ import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import DraftsIcon from "@material-ui/icons/Drafts";
-import SendIcon from "@material-ui/icons/Send";
+import DeleteIcon from "@material-ui/icons/Delete";
+import EditIcon from "@material-ui/icons/Edit";
 
 const StyledMenu = withStyles({
   paper: {
@@ -27,17 +27,6 @@ const StyledMenu = withStyles({
   />
 ));
 
-const StyledMenuItem = withStyles((theme) => ({
-  root: {
-    "&:focus": {
-      backgroundColor: theme.palette.primary.main,
-      "& .MuiListItemIcon-root, & .MuiListItemText-primary": {
-        color: theme.palette.common.white,
-      },
-    },
-  },
-}))(MenuItem);
-
 const IdentityActionMenu = ({
   handlePopoverOpen,
   anchorEl,
@@ -53,26 +42,26 @@ const IdentityActionMenu = ({
       keepMounted
       open={Boolean(anchorEl)}
       onClose={handleClose}>
-      <StyledMenuItem
+      <MenuItem
         onClick={(e) => {
           handlePopoverOpen(e.currentTarget);
           handleClose();
         }}>
         <ListItemIcon>
-          <SendIcon fontSize="small" />
+          <EditIcon fontSize="small" />
         </ListItemIcon>
         <ListItemText primary="Edit Identity" />
-      </StyledMenuItem>
-      <StyledMenuItem
+      </MenuItem>
+      <MenuItem
         onClick={() => {
           handleClose();
           deleteIdentity(selectedIdentity._id);
         }}>
         <ListItemIcon>
-          <DraftsIcon fontSize="small" />
+          <DeleteIcon fontSize="small" />
         </ListItemIcon>
         <ListItemText primary="Delete Identity" />
-      </StyledMenuItem>
+      </MenuItem>
     </StyledMenu>
   );
 };

@@ -6,7 +6,6 @@ import {
   makeStyles,
   Typography,
 } from "@material-ui/core";
-import { updateIdentity } from "../../actions/identity";
 import { useForm, Controller } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
