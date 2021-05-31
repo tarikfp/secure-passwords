@@ -57,13 +57,17 @@ const useStyles = makeStyles((theme) => ({
 
 const useCreateIdentityFormValidation = () => {
   const formValidationRequiredMessage = "Required Field";
-  const passwordLengthValidMessage = "Password must be at least 6 length";
+  const passwordLengthValidMessage =
+    "Your Identity Password Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character";
   return yup.object().shape({
     title: yup.string().required(formValidationRequiredMessage),
     password: yup
       .string()
       .required(formValidationRequiredMessage)
-      .min(5, passwordLengthValidMessage),
+      .matches(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
+        passwordLengthValidMessage,
+      ),
   });
 };
 

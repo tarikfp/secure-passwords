@@ -32,7 +32,10 @@ export const createIdentity = (data) => async (dispatch) => {
         toast.error(error.msg, { position: "top-center" }),
       );
     } else {
-      toast.error("An Error Occured", { position: "top-center" });
+      toast.error("An Error Occured", {
+        position: "top-center",
+        toastId: "an-error-occured",
+      });
     }
     dispatch({
       type: IDENTITY_ACTION_FAIL,
@@ -57,7 +60,10 @@ export const deleteIdentity = (id) => async (dispatch) => {
         toast.error(error.msg, { position: "top-center" }),
       );
     } else {
-      toast.error("An Error Occured", { position: "top-center" });
+      toast.error("An Error Occured", {
+        position: "top-center",
+        toastId: "an-error-occured",
+      });
     }
     dispatch({
       type: IDENTITY_ACTION_FAIL,
@@ -82,7 +88,10 @@ export const updateIdentity = (data) => async (dispatch) => {
         toast.error(error.msg, { position: "top-center" }),
       );
     } else {
-      toast.error("An Error Occured", { position: "top-center" });
+      toast.error("An Error Occured", {
+        position: "top-center",
+        toastId: "an-error-occured",
+      });
     }
     dispatch({
       type: IDENTITY_ACTION_FAIL,
@@ -108,7 +117,10 @@ export const getAllIdentity = () => async (dispatch) => {
         toast.error(error.msg, { position: "top-center" }),
       );
     } else {
-      toast.error("An Error Occured", { position: "top-center" });
+      toast.error("An Error Occured", {
+        position: "top-center",
+        toastId: "an-error-occured",
+      });
     }
     dispatch({
       type: IDENTITY_ACTION_FAIL,
@@ -132,7 +144,10 @@ export const getIdentity = (data) => async (dispatch) => {
         toast.error(error.msg, { position: "top-center" }),
       );
     } else {
-      toast.error("An Error Occured", { position: "top-center" });
+      toast.error("An Error Occured", {
+        position: "top-center",
+        toastId: "an-error-occured",
+      });
     }
     dispatch({
       type: IDENTITY_ACTION_FAIL,

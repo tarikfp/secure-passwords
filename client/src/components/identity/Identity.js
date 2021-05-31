@@ -38,9 +38,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
   },
-  toolbar: {
-    paddingRight: 24,
-  },
+  toolbar: {},
   toolbarIcon: {
     display: "flex",
     alignItems: "center",
@@ -111,6 +109,9 @@ const useStyles = makeStyles((theme) => ({
   fixedHeight: {
     maxHeight: 550,
   },
+  logoutText: {
+    marginRight: theme.spacing(3),
+  },
 }));
 
 const Identity = ({
@@ -152,21 +153,8 @@ const Identity = ({
   return (
     <div className={classes.root}>
       <CssBaseline />
-      <AppBar
-        position="absolute"
-        className={clsx(classes.appBar, open && classes.appBarShift)}>
+      <AppBar position="absolute" className={classes.appBar}>
         <Toolbar className={classes.toolbar}>
-          <IconButton
-            edge="start"
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            className={clsx(
-              classes.menuButton,
-              open && classes.menuButtonHidden,
-            )}>
-            <MenuIcon />
-          </IconButton>
           <Typography
             component="h1"
             variant="h6"
@@ -175,23 +163,23 @@ const Identity = ({
             className={classes.title}>
             My Identities
           </Typography>
+          <Typography
+            component="h1"
+            variant="h6"
+            color="inherit"
+            noWrap
+            className={classes.title}>
+            {"User " + auth.user?.name + " " + auth.user?.surname}
+          </Typography>
+
           <IconButton onClick={() => logout()} color="inherit">
+            <Typography className={classes.logoutText} variant="h6">
+              Logout
+            </Typography>
             <ExitToAppIcon />
           </IconButton>
         </Toolbar>
       </AppBar>
-      <Drawer
-        variant="permanent"
-        classes={{
-          paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
-        }}
-        open={open}>
-        <div className={classes.toolbarIcon}>
-          <IconButton onClick={handleDrawerClose}>
-            <ChevronLeftIcon />
-          </IconButton>
-        </div>
-      </Drawer>
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>
