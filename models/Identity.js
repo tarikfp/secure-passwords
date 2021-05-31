@@ -1,8 +1,9 @@
 const express = require("express");
 const Identity = require("../api/Identity");
+const auth = require("../middleware/auth");
 const router = express.Router();
 
-router.post("/addidentity", (req, res) => {
+router.post("/addidentity", auth, (req, res) => {
   try {
     const { password, title } = req.body;
     const { password: hashedPw, idx } = encrypt(password);
@@ -15,4 +16,4 @@ router.post("/addidentity", (req, res) => {
 });
 
 //@TODO get identity from mongo db
-router.get("/getidentity", (req, res) => {});
+router.get("/getidentity", auth, (req, res) => {});

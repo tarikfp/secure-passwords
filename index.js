@@ -14,6 +14,7 @@ app.use(cors());
 
 //Include identity api
 app.use("/api/identity", require("./api/Identity"));
+app.use("/api/user", require("./api/User"));
 
 app.listen(PORT, () =>
   console.log(`Server has started to listen on PORT ${PORT}`)
