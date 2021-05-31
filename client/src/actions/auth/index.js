@@ -46,6 +46,7 @@ export const login = (data, history) => async (dispatch) => {
       email,
       password,
     });
+    debugger;
     dispatch({
       type: LOGIN_SUCCESS,
       payload: res.data,
