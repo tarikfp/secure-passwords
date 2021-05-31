@@ -23,6 +23,7 @@ import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import { connect } from "react-redux";
 import { logout } from "../../actions/auth";
 import IdentityItem from "./IdentityItem";
+import CreateIdentity from "./CreateIdentity";
 
 const drawerWidth = 240;
 
@@ -101,13 +102,13 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
   },
   fixedHeight: {
-    height: 240,
+    maxHeight: 550,
   },
 }));
 
 const Identity = ({ auth, logout, identity: { loading, items } }) => {
   const classes = useStyles();
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = React.useState(false);
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -166,25 +167,21 @@ const Identity = ({ auth, logout, identity: { loading, items } }) => {
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>
-          <Grid container spacing={3}>
-            <Grid item xs={12} md={8} lg={9}>
-              <Paper className={fixedHeightPaper}>
-                <div>charts here</div>
-              </Paper>
-            </Grid>
-            <Grid item xs={12} md={4} lg={3}>
-              <Paper className={fixedHeightPaper}>
-                <div>deposits here</div>
-              </Paper>
-            </Grid>
-            <Grid item xs={12}>
+          <Grid container spacing={2}>
+            <Grid item xs={9}>
               <Paper className={classes.paper}>
+                <Typography align="center" variant="h6">
+                  Your Current Identities
+                </Typography>
                 <div>
                   {items.map((x) => (
                     <IdentityItem id={x.id} text={x.title} />
                   ))}
                 </div>
               </Paper>
+            </Grid>
+            <Grid item xs={3}>
+              <CreateIdentity />
             </Grid>
           </Grid>
         </Container>
