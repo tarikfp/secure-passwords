@@ -1,9 +1,9 @@
 import {
+  CREATE_IDENTITY,
   DELETE_IDENTITY,
   GET_ALL_IDENTITY,
   GET_IDENTITY,
   IDENTITY_ACTION_FAIL,
-  IDENTITY_ACTION_SUCCESS,
 } from "./types";
 import Axios from "../../services/axios/index";
 import { toast } from "react-toastify";
@@ -18,7 +18,7 @@ export const createIdentity = (data) => async (dispatch) => {
       password,
     });
     dispatch({
-      type: IDENTITY_ACTION_SUCCESS,
+      type: CREATE_IDENTITY,
     });
     toast.success("Identity successfully created", { position: "top-center" });
     return res;

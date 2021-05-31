@@ -170,6 +170,7 @@ const Signup = (props) => {
                 margin="normal"
                 fullWidth
                 id="password"
+                type="password"
                 label="Password"
                 name="password"
                 autoComplete="password"
@@ -192,13 +193,9 @@ const Signup = (props) => {
             className={classes.submit}>
             Signup
           </Button>
-          <Grid container>
-            <Grid item>
-              <Link to="/login" className={classes.loginNavigationLink}>
-                {"Already have an account ? Login"}
-              </Link>
-            </Grid>
-          </Grid>
+          <Link to="/login" className={classes.loginNavigationLink}>
+            {"Already have an account ? Login"}
+          </Link>
         </form>
       </div>
       <Box mt={8}>

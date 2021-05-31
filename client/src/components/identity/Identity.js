@@ -22,6 +22,7 @@ import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import { connect } from "react-redux";
 import { logout } from "../../actions/auth";
+import IdentityItem from "./IdentityItem";
 
 const drawerWidth = 240;
 
@@ -104,7 +105,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Identity = (props) => {
+const Identity = ({ auth, logout, identity: { loading, items } }) => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
   const handleDrawerOpen = () => {
@@ -139,9 +140,9 @@ const Identity = (props) => {
             color="inherit"
             noWrap
             className={classes.title}>
-            Dashboard
+            My Identities
           </Typography>
-          <IconButton onClick={() => props.logout()} color="inherit">
+          <IconButton onClick={() => logout()} color="inherit">
             <ExitToAppIcon />
           </IconButton>
         </Toolbar>
@@ -178,7 +179,11 @@ const Identity = (props) => {
             </Grid>
             <Grid item xs={12}>
               <Paper className={classes.paper}>
-                <div>orders here</div>
+                <div>
+                  {items.map((x) => (
+                    <IdentityItem id={x.id} text={x.title} />
+                  ))}
+                </div>
               </Paper>
             </Grid>
           </Grid>
@@ -188,4 +193,9 @@ const Identity = (props) => {
   );
 };
 
-export default connect(null, { logout })(Identity);
+const mapStateToProps = ({ auth, identity }) => ({
+  auth,
+  identity,
+});
+
+export default connect(mapStateToProps, { logout })(Identity);

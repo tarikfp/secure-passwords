@@ -127,6 +127,7 @@ const Login = (props) => {
                 variant="outlined"
                 margin="normal"
                 fullWidth
+                type="password"
                 id="password"
                 label="Password"
                 name="password"
@@ -150,13 +151,9 @@ const Login = (props) => {
             className={classes.submit}>
             Login
           </Button>
-          <Grid container>
-            <Grid item>
-              <Link to="/signup" className={classes.signupNavigationLink}>
-                {"Don't have an account? Sign Up"}
-              </Link>
-            </Grid>
-          </Grid>
+          <Link to="/signup" className={classes.signupNavigationLink}>
+            {"Don't have an account? Sign Up"}
+          </Link>
         </form>
       </div>
       <Box mt={8}>
