@@ -32,7 +32,7 @@ export const signup = (data, history) => async (dispatch) => {
     const errors = err.response?.data?.errors;
     if (errors) {
       errors.forEach((error) =>
-        toast.error(error.msg, { position: "top-center" }),
+        toast.error(error.msg, { position: "top-center", toastId: "register" }),
       );
     }
     dispatch({
@@ -61,7 +61,7 @@ export const login = (data, history) => async (dispatch) => {
     const errors = err.response?.data?.errors;
     if (errors) {
       errors.forEach((error) =>
-        toast.error(error.msg, { position: "top-center" }),
+        toast.error(error.msg, { position: "top-center", toastId: "login" }),
       );
     }
     dispatch({
