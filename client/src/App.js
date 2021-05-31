@@ -1,24 +1,28 @@
 import React from "react";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import store from "./store";
-import { Provider } from "react-redux";
 import "./App.css";
 import { ToastContainer } from "react-toastify";
-import Layout from "./components/Layout";
 import { loadUser } from "./actions/auth";
 import setAuthToken from "./services/auth/setAuthToken";
+import Routes from "./components/Routes/Routes";
+import Landing from "./components/Layout/Landing";
 
-if (localStorage.token) {
+/* if (localStorage.token) {
   setAuthToken(localStorage.token);
-}
+} */
 const App = () => {
-  React.useEffect(() => {
+  /*   React.useEffect(() => {
     store.dispatch(loadUser());
-  }, []);
+  }, []); */
 
   return (
-    <ToastContainer>
-      <Layout />
-    </ToastContainer>
+    <Router>
+      <Switch>
+        <Route exact path="/" component={Landing} />
+        <Route component={Routes} />
+      </Switch>
+    </Router>
   );
 };
 

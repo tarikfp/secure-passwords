@@ -1,11 +1,11 @@
 import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import Login from "./auth/Login";
-import Signup from "./auth/Signup";
-import ForgotPassword from "./auth/ForgotPassword";
-import Identity from "./identity/Identity";
-import PrivateRoute from "./Routes/PrivateRoute";
+import ForgotPassword from "../auth/ForgotPassword";
+import Login from "../auth/Login";
+import Signup from "../auth/Signup";
+import Identity from "../identity/Identity";
 import NotFound from "../Layout/NotFound";
+import PrivateRoute from "./PrivateRoute";
 
 const Routes = () => {
   return (

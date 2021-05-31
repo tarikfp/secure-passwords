@@ -8,10 +8,15 @@ import Checkbox from "@material-ui/core/Checkbox";
 import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
+import { useHistory } from "react-router-dom";
+import * as yup from "yup";
+import { connect } from "react-redux";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useForm, Controller } from "react-hook-form";
+import { login } from "../../actions/auth";
 
 const Copyright = () => {
   return (
@@ -46,41 +51,90 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const useLoginFormValidation = () => {
+  const formValidationRequiredMessage = "Required Field";
+  const emailValidMessage = "Invalid Email";
+  const passwordLengthValidMessage = "Password must be at least 6 length";
+  return yup.object().shape({
+    email: yup
+      .string()
+      .required(formValidationRequiredMessage)
+      .email(emailValidMessage),
+    password: yup
+      .string()
+      .required(formValidationRequiredMessage)
+      .min(5, passwordLengthValidMessage),
+  });
+};
+
 const Login = () => {
   const classes = useStyles();
+  const history = useHistory();
+  const schema = useLoginFormValidation();
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
+
+  const onSubmit = (data) => {
+    debugger;
+    login(data, history);
+  };
 
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
+        <Avatar className={classes.avatar}></Avatar>
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
-        <form className={classes.form} noValidate>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="email"
-            label="Email Address"
+        <form onSubmit={handleSubmit(onSubmit)} className={classes.form}>
+          <Controller
+            control={control}
             name="email"
-            autoComplete="email"
-            autoFocus
+            render={({ field }) => (
+              <TextField
+                variant="outlined"
+                margin="normal"
+                fullWidth
+                id="email"
+                label="Email Address"
+                name="email"
+                autoComplete="email"
+                helperText={errors.email?.message}
+                error={!!errors.email?.message}
+                autoFocus
+                {...field}
+              />
+            )}
           />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
+          <Controller
+            control={control}
             name="password"
-            label="Password"
-            type="password"
-            id="password"
-            autoComplete="current-password"
+            render={({ field }) => (
+              <TextField
+                variant="outlined"
+                margin="normal"
+                fullWidth
+                id="password"
+                label="Password"
+                name="password"
+                autoComplete="password"
+                helperText={errors.password?.message}
+                error={!!errors.password?.message}
+                autoFocus
+                {...field}
+              />
+            )}
           />
           <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}
@@ -92,7 +146,7 @@ const Login = () => {
             variant="contained"
             color="primary"
             className={classes.submit}>
-            Sign In
+            Login
           </Button>
           <Grid container>
             <Grid item xs>
@@ -115,4 +169,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default connect(null, { login })(Login);
