@@ -1,11 +1,20 @@
 import React from "react";
 import { withStyles } from "@material-ui/core/styles";
-import Menu from "@material-ui/core/Menu";
-import MenuItem from "@material-ui/core/MenuItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
+import {
+  Menu,
+  MenuItem,
+  ListItemIcon,
+  ListItemText,
+  makeStyles,
+} from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
+
+const useStyles = makeStyles((theme) => ({
+  content: {
+    backgroundColor: theme.palette.background.default,
+  },
+}));
 
 const StyledMenu = withStyles({
   paper: {
@@ -34,6 +43,7 @@ const IdentityActionMenu = ({
   selectedIdentity,
   deleteIdentity,
 }) => {
+  const classes = useStyles();
   return (
     <StyledMenu
       id="customized-menu"
@@ -41,26 +51,28 @@ const IdentityActionMenu = ({
       keepMounted
       open={Boolean(anchorEl)}
       onClose={handleClose}>
-      <MenuItem
-        onClick={(e) => {
-          handlePopoverOpen(e.currentTarget);
-          handleClose();
-        }}>
-        <ListItemIcon>
-          <EditIcon fontSize="small" />
-        </ListItemIcon>
-        <ListItemText primary="Edit Identity" />
-      </MenuItem>
-      <MenuItem
-        onClick={() => {
-          handleClose();
-          deleteIdentity(selectedIdentity._id);
-        }}>
-        <ListItemIcon>
-          <DeleteIcon fontSize="small" />
-        </ListItemIcon>
-        <ListItemText primary="Delete Identity" />
-      </MenuItem>
+      <div className={classes.content}>
+        <MenuItem
+          onClick={(e) => {
+            handlePopoverOpen(e.currentTarget);
+            handleClose();
+          }}>
+          <ListItemIcon>
+            <EditIcon fontSize="small" />
+          </ListItemIcon>
+          <ListItemText primary="Edit Identity" />
+        </MenuItem>
+        <MenuItem
+          onClick={() => {
+            handleClose();
+            deleteIdentity(selectedIdentity._id);
+          }}>
+          <ListItemIcon>
+            <DeleteIcon fontSize="small" />
+          </ListItemIcon>
+          <ListItemText primary="Delete Identity" />
+        </MenuItem>
+      </div>
     </StyledMenu>
   );
 };

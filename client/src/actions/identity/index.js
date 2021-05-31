@@ -116,11 +116,6 @@ export const getAllIdentity = () => async (dispatch) => {
       errors.forEach((error) =>
         toast.error(error.msg, { position: "top-center" }),
       );
-    } else {
-      toast.error("An Error Occured", {
-        position: "top-center",
-        toastId: "an-error-occured",
-      });
     }
     dispatch({
       type: IDENTITY_ACTION_FAIL,

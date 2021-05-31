@@ -29,8 +29,8 @@ import IdentityEditPopover from "./IdentityEditPopover";
 import { setTheme } from "../../actions/config";
 import darkTheme from "../../theme/DarkTheme/index";
 import defaultTheme from "../../theme/DefaultTheme";
-
-const drawerWidth = 240;
+import Brightness4Icon from "@material-ui/icons/Brightness4";
+import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -43,14 +43,6 @@ const useStyles = makeStyles((theme) => ({
       duration: theme.transitions.duration.leavingScreen,
     }),
   },
-  appBarShift: {
-    marginLeft: drawerWidth,
-    width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(["width", "margin"], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  },
   menuButton: {
     marginRight: 36,
   },
@@ -60,26 +52,6 @@ const useStyles = makeStyles((theme) => ({
   title: {
     flexGrow: 1,
   },
-  drawerPaper: {
-    position: "relative",
-    whiteSpace: "nowrap",
-    width: drawerWidth,
-    transition: theme.transitions.create("width", {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  },
-  drawerPaperClose: {
-    overflowX: "hidden",
-    transition: theme.transitions.create("width", {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-    width: theme.spacing(7),
-    [theme.breakpoints.up("sm")]: {
-      width: theme.spacing(9),
-    },
-  },
   appBarSpacer: theme.mixins.toolbar,
   content: {
     flexGrow: 1,
@@ -87,7 +59,6 @@ const useStyles = makeStyles((theme) => ({
     overflow: "auto",
   },
   container: {
-    backgroundColor: theme.palette.primary.light,
     paddingTop: theme.spacing(4),
     paddingBottom: theme.spacing(4),
   },
@@ -102,6 +73,16 @@ const useStyles = makeStyles((theme) => ({
   },
   logoutText: {
     marginRight: theme.spacing(3),
+  },
+  cssOutlinedInput: {
+    "&$cssFocused $notchedOutline": {
+      borderColor: `${theme.palette.primary.main} !important`,
+    },
+  },
+  cssFocused: {},
+  notchedOutline: {
+    borderWidth: "1px",
+    borderColor: `${theme.palette.primary.main} !important`,
   },
 }));
 
@@ -139,10 +120,8 @@ const Identity = ({
   const handleThemeChange = () => {
     setDarkTheme(!isDarkTheme);
     if (!isDarkTheme) {
-      console.log("dark");
       setTheme(darkTheme);
     } else {
-      console.log("default");
       setTheme(defaultTheme);
     }
   };
@@ -160,6 +139,7 @@ const Identity = ({
             className={classes.title}>
             My Identities
           </Typography>
+          <AccountCircleIcon />
           <Typography
             component="h1"
             variant="h6"
@@ -168,10 +148,10 @@ const Identity = ({
             className={classes.title}>
             {"User " + auth.user?.name + " " + auth.user?.surname}
           </Typography>
+          <Brightness4Icon />
           <Switch
             checked={isDarkTheme}
             onChange={handleThemeChange}
-            color="primary"
             inputProps={{ "aria-label": "primary checkbox" }}
           />
           <IconButton onClick={() => logout()} color="inherit">

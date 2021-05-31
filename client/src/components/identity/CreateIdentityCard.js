@@ -24,6 +24,7 @@ import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
 
 const useStyles = makeStyles((theme) => ({
   root: {
+    backgroundColor: theme.palette.background.default,
     maxWidth: 345,
     maxHeight: 500,
   },
@@ -55,6 +56,16 @@ const useStyles = makeStyles((theme) => ({
   cancelButton: {
     borderRadius: theme.spacing(2),
     marginBottom: theme.spacing(1.5),
+  },
+  cssOutlinedInput: {
+    "&$cssFocused $notchedOutline": {
+      borderColor: `${theme.palette.primary.main} !important`,
+    },
+  },
+  cssFocused: {},
+  notchedOutline: {
+    borderWidth: "1px",
+    borderColor: "#ffff !important",
   },
 }));
 
@@ -135,6 +146,13 @@ const CreateIdentityCard = ({ createIdentity }) => {
                   helperText={errors.title?.message}
                   error={!!errors.title?.message}
                   autoFocus
+                  InputProps={{
+                    classes: {
+                      root: classes.cssOutlinedInput,
+                      focused: classes.cssFocused,
+                      notchedOutline: classes.notchedOutline,
+                    },
+                  }}
                   {...field}
                 />
               )}
@@ -170,6 +188,11 @@ const CreateIdentityCard = ({ createIdentity }) => {
                         </IconButton>
                       </InputAdornment>
                     ),
+                    classes: {
+                      root: classes.cssOutlinedInput,
+                      focused: classes.cssFocused,
+                      notchedOutline: classes.notchedOutline,
+                    },
                   }}
                   {...field}
                 />

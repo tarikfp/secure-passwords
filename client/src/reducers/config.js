@@ -1,8 +1,8 @@
 import { SET_THEME } from "../actions/config/types";
-import darkTheme from "../theme/DarkTheme";
+import defaultTheme from "../theme/DefaultTheme";
 
 const initialState = {
-  currentTheme: darkTheme,
+  currentTheme: defaultTheme,
 };
 
 export default function configStateManagement(state = initialState, action) {

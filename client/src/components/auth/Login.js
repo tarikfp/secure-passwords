@@ -7,6 +7,7 @@ import {
   Box,
   Typography,
   Container,
+  Switch,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { Link, useHistory } from "react-router-dom";
@@ -15,6 +16,10 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm, Controller } from "react-hook-form";
 import { login } from "../../actions/auth";
+import { setTheme } from "../../actions/config";
+import defaultTheme from "../../theme/DefaultTheme";
+import darkTheme from "../../theme/DarkTheme";
+import Brightness4Icon from "@material-ui/icons/Brightness4";
 
 const Copyright = () => {
   return (
@@ -50,6 +55,21 @@ const useStyles = makeStyles((theme) => ({
   signupNavigationLink: {
     textDecoration: "none",
   },
+  cssOutlinedInput: {
+    "&$cssFocused $notchedOutline": {
+      borderColor: `${theme.palette.primary.main} !important`,
+    },
+  },
+  cssFocused: {},
+  notchedOutline: {
+    borderWidth: "1px",
+    borderColor: `${theme.palette.primary.main} !important`,
+  },
+  bottom: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
 }));
 
 const useLoginFormValidation = () => {
@@ -68,9 +88,10 @@ const useLoginFormValidation = () => {
   });
 };
 
-const Login = ({ login }) => {
+const Login = ({ login, setTheme }) => {
   const classes = useStyles();
   const history = useHistory();
+  const [isDarkTheme, setDarkTheme] = React.useState(false);
   const schema = useLoginFormValidation();
   const {
     handleSubmit,
@@ -84,6 +105,14 @@ const Login = ({ login }) => {
     },
   });
   const onSubmit = (data) => login(data, history);
+  const handleThemeChange = () => {
+    setDarkTheme(!isDarkTheme);
+    if (!isDarkTheme) {
+      setTheme(darkTheme);
+    } else {
+      setTheme(defaultTheme);
+    }
+  };
 
   return (
     <Container component="main" maxWidth="xs">
@@ -108,6 +137,13 @@ const Login = ({ login }) => {
                 autoComplete="email"
                 helperText={errors.email?.message}
                 error={!!errors.email?.message}
+                InputProps={{
+                  classes: {
+                    root: classes.cssOutlinedInput,
+                    focused: classes.cssFocused,
+                    notchedOutline: classes.notchedOutline,
+                  },
+                }}
                 autoFocus
                 {...field}
               />
@@ -128,6 +164,13 @@ const Login = ({ login }) => {
                 autoComplete="password"
                 helperText={errors.password?.message}
                 error={!!errors.password?.message}
+                InputProps={{
+                  classes: {
+                    root: classes.cssOutlinedInput,
+                    focused: classes.cssFocused,
+                    notchedOutline: classes.notchedOutline,
+                  },
+                }}
                 autoFocus
                 {...field}
               />
@@ -141,9 +184,19 @@ const Login = ({ login }) => {
             className={classes.submit}>
             Login
           </Button>
-          <Link to="/signup" className={classes.signupNavigationLink}>
-            {"Don't have an account? Sign Up"}
-          </Link>
+          <div className={classes.bottom}>
+            <Link to="/signup" className={classes.signupNavigationLink}>
+              {"Don't have an account? Sign Up"}
+            </Link>
+            <div>
+              <Brightness4Icon />
+              <Switch
+                checked={isDarkTheme}
+                onChange={handleThemeChange}
+                inputProps={{ "aria-label": "primary checkbox" }}
+              />
+            </div>
+          </div>
         </form>
       </div>
       <Box mt={8}>
@@ -153,4 +206,4 @@ const Login = ({ login }) => {
   );
 };
 
-export default connect(null, { login })(Login);
+export default connect(null, { login, setTheme })(Login);

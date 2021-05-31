@@ -28,6 +28,16 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: theme.spacing(2),
     marginBottom: theme.spacing(1.5),
   },
+  cssOutlinedInput: {
+    "&$cssFocused $notchedOutline": {
+      borderColor: `${theme.palette.primary.main} !important`,
+    },
+  },
+  cssFocused: {},
+  notchedOutline: {
+    borderWidth: "1px",
+    borderColor: `${theme.palette.primary.main} !important`,
+  },
 }));
 
 const useCreateIdentityFormValidation = () => {
@@ -122,6 +132,13 @@ const IdentityEditPopover = ({
                 helperText={errors.title?.message}
                 error={!!errors.title?.message}
                 autoFocus
+                InputProps={{
+                  classes: {
+                    root: classes.cssOutlinedInput,
+                    focused: classes.cssFocused,
+                    notchedOutline: classes.notchedOutline,
+                  },
+                }}
                 {...field}
               />
             )}
@@ -155,6 +172,11 @@ const IdentityEditPopover = ({
                       </IconButton>
                     </InputAdornment>
                   ),
+                  classes: {
+                    root: classes.cssOutlinedInput,
+                    focused: classes.cssFocused,
+                    notchedOutline: classes.notchedOutline,
+                  },
                 }}
                 {...field}
               />

@@ -11,17 +11,21 @@ import {
 const darkTheme = createMuiTheme({
   palette: {
     primary: {
-      main: red[500],
+      main: "#ff9800",
       dark: brown[500],
-      light: "#bdbdbd",
+      light: "#f6685e",
     },
     secondary: {
-      main: cyan[500],
+      main: "#b26a00",
       dark: brown[500],
       light: blue[500],
     },
+    text: {
+      primary: "#ffff",
+      secondary: "#ffff",
+    },
     background: {
-      default: "#1b1b1b",
+      default: "#212121",
       paper: "#42424",
     },
   },
