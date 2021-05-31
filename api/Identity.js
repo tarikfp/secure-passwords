@@ -1,21 +1,28 @@
 const express = require("express");
 const Identity = require("../models/Identity");
+const ExpressBrute = require("express-brute");
+const store = new ExpressBrute.MemoryStore();
+const bruteforce = new ExpressBrute(store);
 const auth = require("../middleware/auth");
+const { encrypt } = require("../custom-services/Encryption");
+
 const router = express.Router();
 
-router.post("/", auth, async (req, res) => {
+router.post("/", async (req, res) => {
   try {
     const { password, title } = req.body;
+    console.log(password);
     const { password: hashedPw, idx } = encrypt(password);
-    const identity = new Identity({ title, password: hashedPw, idx });
+    const identity = new Identity({ title, password: hashedPw, idx: "2" });
     await identity.save();
     return res.status(200).send();
   } catch (err) {
-    return res.status(500).send();
+    console.log(err);
+    return res.status(500).json(err);
   }
 });
 
-router.put("/", auth, async (req, res) => {
+router.put("/", [auth, bruteforce.prevent], async (req, res) => {
   try {
     const { id, password, title } = req.body;
     const { password: hashedPw, idx } = encrypt(password);
@@ -35,7 +42,7 @@ router.put("/", auth, async (req, res) => {
   }
 });
 
-router.delete("/", auth, async (req, res) => {
+router.delete("/", [auth, bruteforce.prevent], async (req, res) => {
   try {
     const id = req.params.id;
     let foundIdentity = await Identity.findOne({ id });
@@ -49,7 +56,7 @@ router.delete("/", auth, async (req, res) => {
   }
 });
 
-router.get("/getall", auth, async (req, res) => {
+router.get("/identity", [auth, bruteforce.prevent], async (req, res) => {
   try {
     const identities = await Identity.find();
     return res.status(200).json({ identities });
@@ -58,7 +65,7 @@ router.get("/getall", auth, async (req, res) => {
   }
 });
 
-router.post("/getbyid", auth, async (req, res) => {
+router.get("/identity/", [auth, bruteforce.prevent], async (req, res) => {
   try {
     const id = req.params.id;
     let foundIdentity = await Identity.findOne({ id });
