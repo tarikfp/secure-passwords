@@ -11,7 +11,10 @@ module.exports = async (req, res, next) => {
   }
   // Verify Token
   try {
-    const decoded = jwt.decode(token, config.get("jwtSecret"));
+    const decoded = jwt.decode(
+      token,
+      process.env.JWT_SECRET || config.get("jwtSecret")
+    );
     const { id, name, surname, email } = decoded.user;
     let user = await User.findById(id);
     if (!user) {

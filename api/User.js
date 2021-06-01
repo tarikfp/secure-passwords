@@ -86,9 +86,13 @@ router.post(
           email: user.email,
         },
       };
-      const token = jwt.sign(payload, config.get("jwtSecret"), {
-        expiresIn: 480000,
-      });
+      const token = jwt.sign(
+        payload,
+        process.env.JWT_SECRET || config.get("jwtSecret"),
+        {
+          expiresIn: 480000,
+        }
+      );
       await user.save();
       res.status(200).json({ token });
     } catch (err) {

@@ -4,7 +4,7 @@ const crypto = require("crypto");
 // import config library in order to get secret from json
 const config = require("config");
 // secret variable for encryption
-const secret = config.get("secret.crypto");
+const secret = process.env.CRYPTO_SECRET || config.get("secret.crypto");
 const algorithm = "aes-256-ctr";
 const iv = crypto.randomBytes(16);
 

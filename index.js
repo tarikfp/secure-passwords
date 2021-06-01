@@ -4,7 +4,8 @@ const helmet = require("helmet");
 const cors = require("cors");
 const connectDB = require("./config/db");
 const config = require("config");
-const PORT = config.get("serverConfig.port");
+require("dotenv").config();
+const PORT = process.env.PORT || config.get("serverConfig.port");
 
 // Connect to our mongo db
 connectDB();
