@@ -126,7 +126,11 @@ const CreateIdentityCard = ({ createIdentity }) => {
             <AddCircleIcon color="secondary" />
           </IconButton>
         }
-        title={<Typography variant="h6">Create Your Identity</Typography>}
+        title={
+          <Typography color="primary" variant="h6">
+            Create New Identity
+          </Typography>
+        }
       />
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>

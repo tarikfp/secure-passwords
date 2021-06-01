@@ -10,6 +10,12 @@ const { encrypt, decrypt } = require("../custom-services/Encryption");
 router.post("/", [auth, bruteforce.prevent], async (req, res) => {
   try {
     const { password, title } = req.body;
+    const isIdentityExists = await Identity.findOne({ title });
+    if (isIdentityExists) {
+      return res.status(404).json({
+        errors: [{ msg: "Identity already exists with the same title !" }],
+      });
+    }
     const hashedData = encrypt(password);
     const identity = new Identity({
       title,

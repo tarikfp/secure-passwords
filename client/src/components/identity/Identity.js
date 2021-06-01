@@ -168,13 +168,15 @@ const Identity = ({
         <Container maxWidth="lg" className={classes.container}>
           <IconButton onClick={() => getAllIdentity(true)}>
             <RefreshIcon fontSize="large" color="primary" />
-            <Typography variant="h6">Refresh</Typography>
+            <Typography color="primary" variant="h6">
+              Refresh
+            </Typography>
           </IconButton>
           <Grid container spacing={2}>
             <Grid item xs={9}>
               {fetchLoading && <CustomLinearProgress loading={fetchLoading} />}
               <Paper className={classes.paper}>
-                <Typography align="center" variant="h6">
+                <Typography color="primary" align="center" variant="h6">
                   Your Current Identities
                 </Typography>
                 <div>
