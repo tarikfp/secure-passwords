@@ -6,8 +6,11 @@ export const handleManyRequest = (err) => {
     err.data.error.text === "Too many requests in this time frame."
   ) {
     return toast.error(
-      "Too Many Requests ! Please wait a little then execute any action",
-      { position: "top-center", toastId: "many-request" },
+      "TOO MANY REQUESTS RECEIVED. PLEASE WAIT SOME TIME THEN TRY AGAIN",
+      {
+        position: "top-center",
+        toastId: "many-request",
+      },
     );
   }
 };

@@ -11,6 +11,7 @@ import Axios from "../../services/axios/index";
 import setAuthToken from "../../services/auth/setAuthToken";
 import { toast } from "react-toastify";
 import { serverURL } from "../../infrastructure/ServerConfig";
+import { handleManyRequest } from "../../infrastructure/handleManyRequest";
 
 // Signup User
 
@@ -59,6 +60,7 @@ export const login = (data, history) => async (dispatch) => {
     history.push("/identity");
     return res;
   } catch (err) {
+    handleManyRequest(err.response);
     const errors = err.response?.data?.errors;
     if (errors) {
       errors.forEach((error) =>

@@ -5,7 +5,10 @@ const jwt = require("jsonwebtoken");
 const config = require("config");
 const User = require("../models/User");
 const auth = require("../middleware/auth");
-const { encrypt, compare, decrypt } = require("../custom-services/Encryption");
+const ExpressBrute = require("express-brute");
+const store = new ExpressBrute.MemoryStore();
+const bruteforce = new ExpressBrute(store, { minWait: 10000 });
+const { encrypt, compare } = require("../custom-services/Encryption");
 
 router.post(
   "/register",
@@ -47,6 +50,7 @@ router.post(
 
 router.post(
   "/login",
+  bruteforce.prevent,
   [
     check("email", "Email is required").not().isEmpty(),
     check("email", "Please provide valid e-mail").isEmail(),
