@@ -1,10 +1,7 @@
 import { toast } from "react-toastify";
 
 export const handleManyRequest = (err) => {
-  if (
-    err.data?.error?.text &&
-    err.data.error.text === "Too many requests in this time frame."
-  ) {
+  if (err?.data?.error?.text === "Too many requests in this time frame.") {
     return toast.error(
       "TOO MANY REQUESTS RECEIVED. PLEASE WAIT SOME TIME THEN TRY AGAIN",
       {

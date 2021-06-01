@@ -1,33 +1,27 @@
 import React from "react";
+import { Typography, makeStyles } from "@material-ui/core";
 import { Link } from "react-router-dom";
 
+const useStyles = makeStyles(() => ({
+  root: {
+    display: "flex",
+    height: "100vh",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+}));
+
 const NotFound = () => {
+  const classes = useStyles();
   return (
-    <React.Fragment>
-      <head>
-        <link
-          href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@600;900&display=swap"
-          rel="stylesheet"
-        />
-        <script
-          src="https://kit.fontawesome.com/4b9ba14b0f.js"
-          crossorigin="anonymous"></script>
-      </head>
-      <body>
-        <div class="mainbox">
-          <div class="err">4</div>
-          <div class="err3">0</div>
-          <div class="err2">4</div>
-          <div class="msg">
-            Maybe this page moved? Got deleted? Is hiding out in quarantine?
-            Never existed in the first place?
-            <p>
-              Let's go <Link to="/">home</Link> and try from there.
-            </p>
-          </div>
-        </div>
-      </body>
-    </React.Fragment>
+    <div className={classes.root}>
+      <Typography align="center" variant="h3">
+        404 Not Found
+        <br />
+        <br />
+        <Link to="/"> Go to home page </Link>
+      </Typography>
+    </div>
   );
 };
 
