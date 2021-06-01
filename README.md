@@ -30,4 +30,11 @@ const encrypt = (text) => {
 };
 ```
 
+An example of registered user in mongodb document is showned below. As it can be realized, encryption function return values which are iv (initialization vector) and password are saved in mongoose document as well as user's other fields.
+
+![image](https://user-images.githubusercontent.com/61876765/120395673-0db0a080-c33e-11eb-9501-d4e57c5f6383.png)
+
+
+
+
 
