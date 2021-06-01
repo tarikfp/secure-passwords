@@ -5,9 +5,7 @@ const jwt = require("jsonwebtoken");
 const config = require("config");
 const User = require("../models/User");
 const auth = require("../middleware/auth");
-const { generateSalt } = require("../custom-services/Salter");
-const { hash } = require("../custom-services/Hash");
-const { compare } = require("../custom-services/Compare");
+const { encrypt, compare, decrypt } = require("../custom-services/Encryption");
 
 router.post(
   "/register",
@@ -31,14 +29,13 @@ router.post(
           .status(400)
           .json({ errors: [{ msg: "User Already Exists With That E-Mail" }] });
       }
-      const salt = generateSalt(10);
-      const hashedPassword = hash(password, salt);
+      const hashedData = encrypt(password);
       user = new User({
         name,
         surname,
         email,
-        password: hashedPassword.password,
-        salt: hashedPassword.salt,
+        password: hashedData.password,
+        iv: hashedData.iv,
       });
       await user.save();
       return res.status(200).send();
@@ -72,8 +69,8 @@ router.post(
       }
       // Check if the password is true
       const isMatch = compare(password, {
-        salt: user.salt,
-        hashedpassword: user.password,
+        iv: user.iv,
+        password: user.password,
       });
       // User not found with the given password
       if (!isMatch) {

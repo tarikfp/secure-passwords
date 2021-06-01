@@ -10,13 +10,14 @@ import {
 import Axios from "../../services/axios/index";
 import setAuthToken from "../../services/auth/setAuthToken";
 import { toast } from "react-toastify";
+import { serverURL } from "../../infrastructure/ServerConfig";
 
 // Signup User
 
 export const signup = (data, history) => async (dispatch) => {
   const { name, surname, email, password } = data;
   try {
-    const res = await Axios.post(`api/user/register`, {
+    const res = await Axios.post(`${serverURL}/api/user/register`, {
       name,
       surname,
       email,
@@ -46,7 +47,7 @@ export const signup = (data, history) => async (dispatch) => {
 export const login = (data, history) => async (dispatch) => {
   try {
     const { email, password } = data;
-    const res = await Axios.post(`/api/user/login`, {
+    const res = await Axios.post(`${serverURL}/api/user/login`, {
       email,
       password,
     });
@@ -77,7 +78,7 @@ export const loadUser = () => async (dispatch) => {
     if (localStorage.token) {
       setAuthToken(localStorage.token);
     }
-    const res = await Axios.get("/api/user/auth");
+    const res = await Axios.get(`${serverURL}/api/user/auth`);
     dispatch({
       type: USER_LOADED,
       payload: res.data,

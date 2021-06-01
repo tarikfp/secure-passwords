@@ -18,7 +18,7 @@ const UserSchema = new Schema({
     type: String,
     required: true,
   },
-  salt: {
+  iv: {
     type: String,
     required: true,
   },

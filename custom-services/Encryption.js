@@ -5,47 +5,41 @@ const crypto = require("crypto");
 const config = require("config");
 // secret variable for encryption
 const secret = config.get("secret.crypto");
+const algorithm = "aes-256-ctr";
+const iv = crypto.randomBytes(16);
 
 // 16 bytes encryption with aes-256-ctr
 
-const encrypt = (password) => {
-  // function which take password param to be encrypted
-  const idx = Buffer.from(crypto.randomBytes(16));
-  /*   let idx = crypto
-    .createHash("sha256")
-    .update(String(secret))
-    .digest("base64")
-    .substr(0, 16); */
-
-  // idx is identifier for encryption
-  const cipher = crypto.createCipheriv("aes-256-ctr", Buffer.from(secret), idx);
-
-  const encryptedPassword = Buffer.concat([
-    cipher.update(password),
-    cipher.final(),
-  ]);
-
+const encrypt = (text) => {
+  const cipher = crypto.createCipheriv(algorithm, secret, iv);
+  const encrypted = Buffer.concat([cipher.update(text), cipher.final()]);
   return {
-    idx: idx.toString("hex"),
-    password: encryptedPassword.toString("hex"),
+    iv: iv.toString("hex"),
+    password: encrypted.toString("hex"),
   };
-  // returning an response object with idx(identifier) and the password as a string hexadeciaml
 };
 
 // Using secret and passing encryption idx in order to decrpyt given password
-const decrypt = (encryption) => {
+const decrypt = (hash) => {
   const decipher = crypto.createDecipheriv(
-    "aes-256-ctr",
-    Buffer.from(secret),
-    Buffer.from(encryption.idx, "hex")
+    algorithm,
+    secret,
+    Buffer.from(hash.iv, "hex")
   );
-  const decryptedPassword = Buffer.concat([
-    decipher.update(Buffer.from(encryption.password, "hex")),
+  const decrpyted = Buffer.concat([
+    decipher.update(Buffer.from(hash.password, "hex")),
     decipher.final(),
   ]);
-
-  // returning decrpyted password as string
-  return decryptedPassword.toString();
+  return decrpyted.toString();
 };
-//to access these function in another file
-module.exports = { encrypt, decrypt };
+
+const compare = (password, hash) => {
+  const plainPassword = decrypt(hash);
+  if (password === plainPassword) {
+    return true;
+  }
+  return false;
+};
+
+//exporting functions in order to access in another files
+module.exports = { encrypt, decrypt, compare };

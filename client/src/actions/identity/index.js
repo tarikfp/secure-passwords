@@ -10,13 +10,14 @@ import {
 import Axios from "../../services/axios/index";
 import { toast } from "react-toastify";
 import { handleManyRequest } from "../../infrastructure/handleManyRequest";
+import { serverURL } from "../../infrastructure/ServerConfig";
 
 // Create Identity
 
 export const createIdentity = (data) => async (dispatch) => {
   const { title, password } = data;
   try {
-    const res = await Axios.post(`api/identity`, {
+    const res = await Axios.post(`${serverURL}/api/identity`, {
       title,
       password,
     });
@@ -47,7 +48,7 @@ export const createIdentity = (data) => async (dispatch) => {
 
 export const deleteIdentity = (id) => async (dispatch) => {
   try {
-    await Axios.delete(`/api/identity/${id}`);
+    await Axios.delete(`${serverURL}/api/identity/${id}`);
     dispatch({
       type: DELETE_IDENTITY,
       payload: id,
@@ -75,7 +76,7 @@ export const deleteIdentity = (id) => async (dispatch) => {
 
 export const updateIdentity = (data) => async (dispatch) => {
   try {
-    const res = await Axios.put(`/api/identity`, data);
+    const res = await Axios.put(`${serverURL}/api/identity`, data);
     dispatch({
       type: UPDATE_IDENTITY,
       payload: res.data,
@@ -103,7 +104,7 @@ export const updateIdentity = (data) => async (dispatch) => {
 
 export const getAllIdentity = (isRefresh) => async (dispatch) => {
   try {
-    const res = await Axios.get("/api/identity/identity");
+    const res = await Axios.get(`${serverURL}/api/identity/identity`);
     dispatch(setIdentityLoading());
     if (res && isRefresh) {
       toast.success("Identity list successfully refreshed", {
@@ -132,7 +133,9 @@ export const getAllIdentity = (isRefresh) => async (dispatch) => {
 
 export const getIdentity = (data) => async (dispatch) => {
   try {
-    const res = await Axios.get(`/api/identity/identity/${data.id}`);
+    const res = await Axios.get(
+      `${serverURL}/api/identity/identity/${data.id}`,
+    );
     dispatch({
       type: GET_IDENTITY,
       payload: res.data,

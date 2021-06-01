@@ -104,7 +104,6 @@ const Identity = ({
     getAllIdentity();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
   const handleMenuClose = () => {
     setMenuAnchorEl(null);
   };

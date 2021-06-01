@@ -84,6 +84,7 @@ const IdentityEditPopover = ({
   React.useEffect(() => {
     if (anchorEl !== null) {
       setValue("title", selectedIdentity.title);
+      setValue("password", selectedIdentity.password);
     }
     if (anchorEl === null) {
       reset();
@@ -163,7 +164,9 @@ const IdentityEditPopover = ({
                   endAdornment: (
                     <InputAdornment position="start">
                       <IconButton
-                        onClick={() => setPasswordVisible(!isPasswordVisible)}>
+                        onClick={() => {
+                          setPasswordVisible(!isPasswordVisible);
+                        }}>
                         {isPasswordVisible ? (
                           <VisibilityIcon color="primary" />
                         ) : (

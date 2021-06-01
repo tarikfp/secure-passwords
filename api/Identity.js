@@ -5,21 +5,24 @@ const ExpressBrute = require("express-brute");
 const store = new ExpressBrute.MemoryStore();
 const bruteforce = new ExpressBrute(store, { minWait: 10000 });
 const auth = require("../middleware/auth");
-const { generateSalt } = require("../custom-services/Salter");
-const { hash } = require("../custom-services/Hash");
+const { encrypt, decrypt } = require("../custom-services/Encryption");
 
 router.post("/", [auth, bruteforce.prevent], async (req, res) => {
   try {
     const { password, title } = req.body;
-    const salt = generateSalt(10);
-    const hashedPassword = await hash(password, salt);
+    const hashedData = encrypt(password);
     const identity = new Identity({
       title,
-      password: hashedPassword.password,
-      salt: hashedPassword.salt,
+      password: hashedData.password,
+      iv: hashedData.iv,
     });
     await identity.save();
-    return res.status(200).json(identity);
+    const createdIdentity = {
+      ...identity._doc,
+      password: decrypt(hashedData),
+    };
+    // Return plain password in order to show it on client
+    return res.status(200).json(createdIdentity);
   } catch (err) {
     return res.status(500).json(err);
   }
@@ -39,7 +42,10 @@ router.put("/", [auth, bruteforce.prevent], async (req, res) => {
       { salt: hashedPassword.salt, password: hashedPassword.password, title },
       { new: true }
     );
-    return res.status(200).json(updatedIdentity);
+    // Return plain password in order to show it on client
+    return res
+      .status(200)
+      .json({ ...updatedIdentity, password: decrypt(hashedData) });
   } catch (err) {
     return res.status(500).send();
   }
@@ -62,8 +68,19 @@ router.delete("/:id", [auth, bruteforce.prevent], async (req, res) => {
 router.get("/identity", [auth, bruteforce.prevent], async (req, res) => {
   try {
     const identities = await Identity.find();
+    if (identities.length > 0) {
+      // Return plain password in order to show it on client
+      identities.map(
+        (identity) =>
+          (identity.password = decrypt({
+            iv: identity.iv,
+            password: identity.password,
+          }))
+      );
+    }
     return res.status(200).json({ identities });
   } catch (err) {
+    console.log(err);
     return res.status(500).send();
   }
 });
