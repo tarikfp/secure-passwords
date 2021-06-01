@@ -41,18 +41,20 @@ router.put("/", [auth, bruteforce.prevent], async (req, res) => {
     if (!foundIdentity) {
       return res.status(404).json({ errors: [{ msg: "No Identity Found !" }] });
     }
-    const salt = generateSalt(10);
-    const hashedPassword = hash(password, salt);
+    const hashedData = encrypt(password);
     const updatedIdentity = await Identity.findOneAndUpdate(
       { _id: id },
-      { salt: hashedPassword.salt, password: hashedPassword.password, title },
+      { iv: hashedData.iv, password: hashedData.password, title },
       { new: true }
     );
+    const _updatedIdentity = {
+      ...updatedIdentity._doc,
+      password: decrypt(hashedData),
+    };
     // Return plain password in order to show it on client
-    return res
-      .status(200)
-      .json({ ...updatedIdentity, password: decrypt(hashedData) });
+    return res.status(200).json(_updatedIdentity);
   } catch (err) {
+    console.log(err);
     return res.status(500).send();
   }
 });

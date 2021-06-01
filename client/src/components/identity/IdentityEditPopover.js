@@ -88,6 +88,7 @@ const IdentityEditPopover = ({
     }
     if (anchorEl === null) {
       reset();
+      setPasswordVisible(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [anchorEl]);
