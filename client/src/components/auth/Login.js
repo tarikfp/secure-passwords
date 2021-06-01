@@ -31,7 +31,6 @@ const Copyright = () => {
         </Typography>
       </Link>{" "}
       {new Date().getFullYear()}
-      {"."}
     </Typography>
   );
 };
