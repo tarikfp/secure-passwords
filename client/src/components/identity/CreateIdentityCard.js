@@ -21,6 +21,7 @@ import { connect } from "react-redux";
 import { createIdentity } from "../../actions/identity";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
+import PasswordStrengthBar from "react-password-strength-bar";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -93,6 +94,7 @@ const CreateIdentityCard = ({ createIdentity }) => {
     control,
     formState: { errors },
     reset,
+    watch,
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
@@ -202,6 +204,7 @@ const CreateIdentityCard = ({ createIdentity }) => {
                 />
               )}
             />
+            <PasswordStrengthBar minLength={6} password={watch("password")} />
             <Button
               type="submit"
               fullWidth

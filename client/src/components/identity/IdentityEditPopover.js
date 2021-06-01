@@ -13,6 +13,7 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
+import PasswordStrengthBar from "react-password-strength-bar";
 
 const useStyles = makeStyles((theme) => ({
   content: {
@@ -73,6 +74,7 @@ const IdentityEditPopover = ({
     setValue,
     formState: { errors },
     reset,
+    watch,
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
@@ -186,6 +188,7 @@ const IdentityEditPopover = ({
               />
             )}
           />
+          <PasswordStrengthBar minLength={6} password={watch("password")} />
           <Button
             type="submit"
             fullWidth
