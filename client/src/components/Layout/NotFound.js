@@ -1,27 +1,24 @@
 import React from "react";
-import { Typography, makeStyles } from "@material-ui/core";
 import { Link } from "react-router-dom";
 
-const useStyles = makeStyles(() => ({
-  root: {
-    display: "flex",
-    height: "100vh",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-}));
-
 const NotFound = () => {
-  const classes = useStyles();
   return (
-    <div className={classes.root}>
-      <Typography align="center" variant="h3">
-        404 Not Found
-        <br />
-        <br />
-        <Link to="/"> Go to home page </Link>
-      </Typography>
-    </div>
+    <section id="not-found">
+      <div class="circles">
+        <p>
+          404
+          <br />
+          <small>PAGE NOT FOUND</small>
+          <br />
+          <Link to="/">
+            <small>GO TO HOME PAGE</small>
+          </Link>
+        </p>
+        <span class="circle big"></span>
+        <span class="circle med"></span>
+        <span class="circle small"></span>
+      </div>
+    </section>
   );
 };
 

@@ -25,11 +25,14 @@ const Copyright = () => {
   return (
     <Typography variant="body2" color="primary" align="center">
       {"Copyright © "}
-      <Link color="inherit" to="https://www.linkedin.com/in/tarik-pinarci/">
+      <a
+        target="_blank"
+        rel="noreferrer"
+        href="https://www.linkedin.com/in/tarik-pinarci/">
         <Typography variant="body2" color="secondary">
           Tarik Pinarci
         </Typography>
-      </Link>{" "}
+      </a>{" "}
       {new Date().getFullYear()}
     </Typography>
   );

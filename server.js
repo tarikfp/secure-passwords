@@ -21,10 +21,6 @@ app.use(helmet());
 app.use("/api/user", require("./api/User"));
 app.use("/api/identity", require("./api/Identity"));
 
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static("client/build"));
-}
-
 app.listen(PORT, () =>
   console.log(`Server has started to listen on PORT ${PORT}`)
 );
