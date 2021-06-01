@@ -7,7 +7,7 @@ export const handleManyRequest = (err) => {
   ) {
     return toast.error(
       "Too Many Requests ! Please wait a little then execute any action",
-      { position: "top-center" },
+      { position: "top-center", toastId: "many-request" },
     );
   }
 };

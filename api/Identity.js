@@ -3,7 +3,7 @@ const router = express.Router();
 const Identity = require("../models/Identity");
 const ExpressBrute = require("express-brute");
 const store = new ExpressBrute.MemoryStore();
-const bruteforce = new ExpressBrute(store);
+const bruteforce = new ExpressBrute(store, { minWait: 10000 });
 const auth = require("../middleware/auth");
 const { generateSalt } = require("../custom-services/Salter");
 const { hash } = require("../custom-services/Hash");
@@ -41,7 +41,6 @@ router.put("/", [auth, bruteforce.prevent], async (req, res) => {
     );
     return res.status(200).json(updatedIdentity);
   } catch (err) {
-    console.log(err);
     return res.status(500).send();
   }
 });
