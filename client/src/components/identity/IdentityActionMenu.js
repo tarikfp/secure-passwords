@@ -12,7 +12,7 @@ import EditIcon from "@material-ui/icons/Edit";
 
 const useStyles = makeStyles((theme) => ({
   content: {
-    backgroundColor: theme.palette.background.default,
+    backgroundColor: theme.palette.background.paper,
   },
 }));
 
@@ -58,9 +58,9 @@ const IdentityActionMenu = ({
             handleClose();
           }}>
           <ListItemIcon>
-            <EditIcon fontSize="small" />
+            <EditIcon color="primary" fontSize="small" />
           </ListItemIcon>
-          <ListItemText primary="Edit Identity" />
+          <ListItemText color="primary" primary="Edit Identity" />
         </MenuItem>
         <MenuItem
           onClick={() => {
@@ -68,9 +68,9 @@ const IdentityActionMenu = ({
             deleteIdentity(selectedIdentity._id);
           }}>
           <ListItemIcon>
-            <DeleteIcon fontSize="small" />
+            <DeleteIcon color="primary" fontSize="small" />
           </ListItemIcon>
-          <ListItemText primary="Delete Identity" />
+          <ListItemText color="primary" primary="Delete Identity" />
         </MenuItem>
       </div>
     </StyledMenu>

@@ -27,7 +27,7 @@ const IdentityItem = ({ onActionClick, identity, setSelectedIdentity }) => {
           }}
           edge="end"
           aria-label="delete">
-          <MoreVertIcon />
+          <MoreVertIcon color="primary" />
         </IconButton>
       </ListItemSecondaryAction>
     </ListItem>

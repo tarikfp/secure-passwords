@@ -26,7 +26,7 @@ const darkTheme = createMuiTheme({
     },
     background: {
       default: "#212121",
-      paper: "#42424",
+      paper: "#424244",
     },
   },
 });

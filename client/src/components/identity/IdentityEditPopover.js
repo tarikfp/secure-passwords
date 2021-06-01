@@ -114,7 +114,7 @@ const IdentityEditPopover = ({
         horizontal: "center",
       }}>
       <div className={classes.content}>
-        <Typography align="center" variant="h6">
+        <Typography color="primary" align="center" variant="h6">
           Update your identity
         </Typography>
         <form onSubmit={handleSubmit(onSubmit)}>

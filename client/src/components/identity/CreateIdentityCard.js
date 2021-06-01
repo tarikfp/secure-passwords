@@ -24,7 +24,7 @@ import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    backgroundColor: theme.palette.background.default,
+    backgroundColor: theme.palette.background.paper,
     maxWidth: 345,
     maxHeight: 500,
   },
