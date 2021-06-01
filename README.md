@@ -1,3 +1,3 @@
 Basic application that secures input passwords
 
-###https://tariksecurepassword.netlify.app/
+https://tariksecurepassword.netlify.app/
