@@ -4,7 +4,6 @@ import "./App.css";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Routes from "./components/Routes/Routes";
-import Landing from "./components/Layout/Landing";
 import { ThemeProvider } from "@material-ui/core";
 import { connect } from "react-redux";
 
@@ -14,7 +13,6 @@ const App = ({ config }) => {
       <React.Fragment>
         <Router>
           <Switch>
-            <Route exact path="/" component={Landing} />
             <Route component={Routes} />
           </Switch>
         </Router>

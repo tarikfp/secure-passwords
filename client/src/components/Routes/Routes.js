@@ -10,8 +10,8 @@ const Routes = () => {
   return (
     <Router>
       <Switch>
+        <Route exact path="/" component={Login} />
         <Route exact path="/signup" component={Signup} />
-        <Route exact path="/login" component={Login} />
         <PrivateRoute exact path="/identity" component={Identity} />
         <Route component={NotFound} />
       </Switch>

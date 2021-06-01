@@ -23,10 +23,12 @@ import { setTheme } from "../../actions/config";
 
 const Copyright = () => {
   return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {"Copyright ©"}
-      <Link color="inherit" href="https://www.linkedin.com/in/tarik-pinarci/">
-        Tarik Pinarci
+    <Typography variant="body2" color="primary" align="center">
+      {"Copyright © "}
+      <Link color="inherit" to="https://www.linkedin.com/in/tarik-pinarci/">
+        <Typography variant="body2" color="secondary">
+          Tarik Pinarci
+        </Typography>
       </Link>{" "}
       {new Date().getFullYear()}
       {"."}
@@ -241,8 +243,10 @@ const Signup = ({ signup, setTheme }) => {
             Signup
           </Button>
           <div className={classes.bottom}>
-            <Link to="/login" className={classes.loginNavigationLink}>
-              {"Already have an account ? Login"}
+            <Link to="/" className={classes.loginNavigationLink}>
+              <Typography variant="body2" color="primary">
+                Already have an account ? Login
+              </Typography>
             </Link>
             <div>
               <Brightness4Icon />

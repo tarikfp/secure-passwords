@@ -26,7 +26,7 @@ export const signup = (data, history) => async (dispatch) => {
     dispatch({
       type: REGISTER_SUCCESS,
     });
-    history.push("/login");
+    history.push("/");
     toast.success("Successfully Registered", { position: "top-center" });
     return res;
   } catch (err) {

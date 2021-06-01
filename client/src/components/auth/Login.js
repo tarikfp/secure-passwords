@@ -23,10 +23,12 @@ import VpnKeyIcon from "@material-ui/icons/VpnKey";
 
 const Copyright = () => {
   return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {"Copyright ©"}
+    <Typography variant="body2" color="primary" align="center">
+      {"Copyright © "}
       <Link color="inherit" to="https://www.linkedin.com/in/tarik-pinarci/">
-        Tarik Pinarci
+        <Typography variant="body2" color="secondary">
+          Tarik Pinarci
+        </Typography>
       </Link>{" "}
       {new Date().getFullYear()}
       {"."}
@@ -185,7 +187,9 @@ const Login = ({ login, setTheme }) => {
           </Button>
           <div className={classes.bottom}>
             <Link to="/signup" className={classes.signupNavigationLink}>
-              {"Don't have an account? Sign Up"}
+              <Typography variant="body2" color="primary">
+                Don't have an account? Sign Up
+              </Typography>
             </Link>
             <div>
               <Brightness4Icon />
