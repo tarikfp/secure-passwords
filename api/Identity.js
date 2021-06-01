@@ -7,9 +7,11 @@ const bruteforce = new ExpressBrute(store, { minWait: 10000 });
 const auth = require("../middleware/auth");
 const { encrypt, decrypt } = require("../custom-services/Encryption");
 
+// Create identity
+
 router.post("/", [auth, bruteforce.prevent], async (req, res) => {
   try {
-    const { password, title } = req.body;
+    const { password, title, website, note } = req.body;
     const isIdentityExists = await Identity.findOne({ title });
     if (isIdentityExists) {
       return res.status(404).json({
@@ -19,6 +21,8 @@ router.post("/", [auth, bruteforce.prevent], async (req, res) => {
     const hashedData = encrypt(password);
     const identity = new Identity({
       title,
+      website,
+      note,
       password: hashedData.password,
       iv: hashedData.iv,
     });
@@ -34,17 +38,25 @@ router.post("/", [auth, bruteforce.prevent], async (req, res) => {
   }
 });
 
+// Update identity
+
 router.put("/", [auth, bruteforce.prevent], async (req, res) => {
   try {
-    const { id, password, title, salt: identitySalt } = req.body;
-    let foundIdentity = Identity.findOne({ _id: id, salt: identitySalt });
+    const { id, password, title, website, note } = req.body;
+    let foundIdentity = Identity.findOne({ _id: id });
     if (!foundIdentity) {
       return res.status(404).json({ errors: [{ msg: "No Identity Found !" }] });
     }
     const hashedData = encrypt(password);
     const updatedIdentity = await Identity.findOneAndUpdate(
       { _id: id },
-      { iv: hashedData.iv, password: hashedData.password, title },
+      {
+        iv: hashedData.iv,
+        password: hashedData.password,
+        title,
+        website,
+        note,
+      },
       { new: true }
     );
     const _updatedIdentity = {
@@ -54,10 +66,11 @@ router.put("/", [auth, bruteforce.prevent], async (req, res) => {
     // Return plain password in order to show it on client
     return res.status(200).json(_updatedIdentity);
   } catch (err) {
-    console.log(err);
     return res.status(500).send();
   }
 });
+
+// Delete identity
 
 router.delete("/:id", [auth, bruteforce.prevent], async (req, res) => {
   try {
@@ -72,6 +85,8 @@ router.delete("/:id", [auth, bruteforce.prevent], async (req, res) => {
     return res.status(500).send();
   }
 });
+
+// Get all identities
 
 router.get("/identity", [auth, bruteforce.prevent], async (req, res) => {
   try {
@@ -89,19 +104,6 @@ router.get("/identity", [auth, bruteforce.prevent], async (req, res) => {
     return res.status(200).json({ identities });
   } catch (err) {
     console.log(err);
-    return res.status(500).send();
-  }
-});
-
-router.get("/identity/", [auth, bruteforce.prevent], async (req, res) => {
-  try {
-    const id = req.params.id;
-    let foundIdentity = await Identity.findOne({ id });
-    if (!foundIdentity) {
-      return res.status(404).json({ errors: [{ msg: "No Identity Found !" }] });
-    }
-    return res.status(200).json({ foundIdentity });
-  } catch (err) {
     return res.status(500).send();
   }
 });

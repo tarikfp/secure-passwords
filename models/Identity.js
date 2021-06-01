@@ -10,6 +10,14 @@ const IdentitySchema = new Schema({
     type: String,
     required: true,
   },
+  website: {
+    type: String,
+    required: true,
+  },
+  note: {
+    type: String,
+    required: true,
+  },
   password: {
     type: String,
     required: true,

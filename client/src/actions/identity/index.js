@@ -15,11 +15,13 @@ import { serverURL } from "../../infrastructure/ServerConfig";
 // Create Identity
 
 export const createIdentity = (data) => async (dispatch) => {
-  const { title, password } = data;
+  const { title, password, website, note } = data;
   try {
     const res = await Axios.post(`${serverURL}/api/identity`, {
       title,
       password,
+      website,
+      note,
     });
     dispatch({
       type: CREATE_IDENTITY,

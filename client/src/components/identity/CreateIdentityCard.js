@@ -15,19 +15,22 @@ import { red } from "@material-ui/core/colors";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import VpnKeyIcon from "@material-ui/icons/VpnKey";
 import { useForm, Controller } from "react-hook-form";
 import { connect } from "react-redux";
 import { createIdentity } from "../../actions/identity";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
 import PasswordStrengthBar from "react-password-strength-bar";
+import CommentIcon from "@material-ui/icons/Comment";
+import VpnKeyIcon from "@material-ui/icons/VpnKey";
+import LanguageIcon from "@material-ui/icons/Language";
+import NoteAddIcon from "@material-ui/icons/NoteAdd";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.background.paper,
     maxWidth: 345,
-    maxHeight: 500,
+    maxHeight: 600,
   },
   form: {
     width: "100%",
@@ -76,6 +79,8 @@ const useCreateIdentityFormValidation = () => {
     "Your Identity Password Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character";
   return yup.object().shape({
     title: yup.string().required(formValidationRequiredMessage),
+    website: yup.string().required(formValidationRequiredMessage),
+    note: yup.string(),
     password: yup
       .string()
       .required(formValidationRequiredMessage)
@@ -99,6 +104,8 @@ const CreateIdentityCard = ({ createIdentity }) => {
     resolver: yupResolver(schema),
     defaultValues: {
       title: "",
+      website: "",
+      note: "",
       password: "",
     },
   });
@@ -158,6 +165,73 @@ const CreateIdentityCard = ({ createIdentity }) => {
                       focused: classes.cssFocused,
                       notchedOutline: classes.notchedOutline,
                     },
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <NoteAddIcon color="primary" />
+                      </InputAdornment>
+                    ),
+                  }}
+                  {...field}
+                />
+              )}
+            />
+            <Controller
+              control={control}
+              name="website"
+              render={({ field }) => (
+                <TextField
+                  variant="outlined"
+                  margin="normal"
+                  fullWidth
+                  id="title"
+                  label="Website Url"
+                  name="website"
+                  autoComplete="website"
+                  helperText={errors.website?.message}
+                  error={!!errors.website?.message}
+                  autoFocus
+                  InputProps={{
+                    classes: {
+                      root: classes.cssOutlinedInput,
+                      focused: classes.cssFocused,
+                      notchedOutline: classes.notchedOutline,
+                    },
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <LanguageIcon color="primary" />
+                      </InputAdornment>
+                    ),
+                  }}
+                  {...field}
+                />
+              )}
+            />
+            <Controller
+              control={control}
+              name="note"
+              render={({ field }) => (
+                <TextField
+                  variant="outlined"
+                  margin="normal"
+                  fullWidth
+                  id="note"
+                  label="Your Identity Note"
+                  name="note"
+                  autoComplete="note"
+                  helperText={errors.note?.message}
+                  error={!!errors.note?.message}
+                  autoFocus
+                  InputProps={{
+                    classes: {
+                      root: classes.cssOutlinedInput,
+                      focused: classes.cssFocused,
+                      notchedOutline: classes.notchedOutline,
+                    },
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <CommentIcon color="primary" />
+                      </InputAdornment>
+                    ),
                   }}
                   {...field}
                 />
@@ -181,7 +255,7 @@ const CreateIdentityCard = ({ createIdentity }) => {
                   autoFocus
                   InputProps={{
                     endAdornment: (
-                      <InputAdornment position="start">
+                      <InputAdornment position="end">
                         <IconButton
                           onClick={() =>
                             setPasswordVisible(!isPasswordVisible)
@@ -192,6 +266,11 @@ const CreateIdentityCard = ({ createIdentity }) => {
                             <VisibilityOffIcon />
                           )}
                         </IconButton>
+                      </InputAdornment>
+                    ),
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <VpnKeyIcon color="primary" />
                       </InputAdornment>
                     ),
                     classes: {

@@ -11,9 +11,13 @@ import {
 import { useForm, Controller } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import PasswordStrengthBar from "react-password-strength-bar";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
-import PasswordStrengthBar from "react-password-strength-bar";
+import CommentIcon from "@material-ui/icons/Comment";
+import LanguageIcon from "@material-ui/icons/Language";
+import NoteAddIcon from "@material-ui/icons/NoteAdd";
+import VpnKeyIcon from "@material-ui/icons/VpnKey";
 
 const useStyles = makeStyles((theme) => ({
   content: {
@@ -87,6 +91,8 @@ const IdentityEditPopover = ({
     if (anchorEl !== null) {
       setValue("title", selectedIdentity.title);
       setValue("password", selectedIdentity.password);
+      setValue("website", selectedIdentity.website);
+      setValue("note", selectedIdentity.note);
     }
     if (anchorEl === null) {
       reset();
@@ -142,6 +148,73 @@ const IdentityEditPopover = ({
                     focused: classes.cssFocused,
                     notchedOutline: classes.notchedOutline,
                   },
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <NoteAddIcon color="primary" />
+                    </InputAdornment>
+                  ),
+                }}
+                {...field}
+              />
+            )}
+          />
+          <Controller
+            control={control}
+            name="website"
+            render={({ field }) => (
+              <TextField
+                variant="outlined"
+                margin="normal"
+                fullWidth
+                id="title"
+                label="Website Url"
+                name="website"
+                autoComplete="website"
+                helperText={errors.website?.message}
+                error={!!errors.website?.message}
+                autoFocus
+                InputProps={{
+                  classes: {
+                    root: classes.cssOutlinedInput,
+                    focused: classes.cssFocused,
+                    notchedOutline: classes.notchedOutline,
+                  },
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <LanguageIcon color="primary" />
+                    </InputAdornment>
+                  ),
+                }}
+                {...field}
+              />
+            )}
+          />
+          <Controller
+            control={control}
+            name="note"
+            render={({ field }) => (
+              <TextField
+                variant="outlined"
+                margin="normal"
+                fullWidth
+                id="note"
+                label="Your Identity Note"
+                name="note"
+                autoComplete="note"
+                helperText={errors.note?.message}
+                error={!!errors.note?.message}
+                autoFocus
+                InputProps={{
+                  classes: {
+                    root: classes.cssOutlinedInput,
+                    focused: classes.cssFocused,
+                    notchedOutline: classes.notchedOutline,
+                  },
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <CommentIcon color="primary" />
+                    </InputAdornment>
+                  ),
                 }}
                 {...field}
               />
@@ -165,17 +238,20 @@ const IdentityEditPopover = ({
                 autoFocus
                 InputProps={{
                   endAdornment: (
-                    <InputAdornment position="start">
+                    <InputAdornment position="end">
                       <IconButton
-                        onClick={() => {
-                          setPasswordVisible(!isPasswordVisible);
-                        }}>
+                        onClick={() => setPasswordVisible(!isPasswordVisible)}>
                         {isPasswordVisible ? (
                           <VisibilityIcon color="primary" />
                         ) : (
                           <VisibilityOffIcon />
                         )}
                       </IconButton>
+                    </InputAdornment>
+                  ),
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <VpnKeyIcon color="primary" />
                     </InputAdornment>
                   ),
                   classes: {
