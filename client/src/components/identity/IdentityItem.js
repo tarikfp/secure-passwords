@@ -6,6 +6,7 @@ import {
   ListItemText,
   IconButton,
   Avatar,
+  Typography,
 } from "@material-ui/core";
 import LockIcon from "@material-ui/icons/Lock";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
@@ -18,7 +19,14 @@ const IdentityItem = ({ onActionClick, identity, setSelectedIdentity }) => {
           <LockIcon />
         </Avatar>
       </ListItemAvatar>
-      <ListItemText primary={identity.title} />
+      <ListItemText
+        disableTypography
+        primary={
+          <Typography color="primary" variant="h6">
+            {identity.title}
+          </Typography>
+        }
+      />
       <ListItemSecondaryAction>
         <IconButton
           onClick={(e) => {
