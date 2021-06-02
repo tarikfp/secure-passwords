@@ -1,6 +1,7 @@
 import { createMuiTheme } from "@material-ui/core/styles";
 import { blue, brown } from "@material-ui/core/colors";
 
+export const DARK_THEME = "DARK_THEME";
 const darkTheme = createMuiTheme({
   palette: {
     primary: {

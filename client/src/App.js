@@ -9,7 +9,7 @@ import { connect } from "react-redux";
 
 const App = ({ config }) => {
   return (
-    <ThemeProvider theme={config.currentTheme}>
+    <ThemeProvider theme={config.theme}>
       <React.Fragment>
         <Router>
           <Switch>

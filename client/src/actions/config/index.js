@@ -1,9 +1,9 @@
 import { SET_THEME } from "./types";
 
 // Set Theme
-export const setTheme = (theme) => async (dispatch) => {
+export const setTheme = (theme, themeName) => async (dispatch) => {
   dispatch({
     type: SET_THEME,
-    payload: theme,
+    payload: { theme, themeName },
   });
 };

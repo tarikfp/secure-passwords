@@ -27,8 +27,8 @@ import IdentityActionMenu from "./IdentityActionMenu";
 import RefreshIcon from "@material-ui/icons/Refresh";
 import IdentityEditPopover from "./IdentityEditPopover";
 import { setTheme } from "../../actions/config";
-import darkTheme from "../../theme/DarkTheme/index";
-import defaultTheme from "../../theme/DefaultTheme";
+import darkTheme, { DARK_THEME } from "../../theme/DarkTheme/index";
+import defaultTheme, { DEFAULT_THEME } from "../../theme/DefaultTheme";
 import Brightness4Icon from "@material-ui/icons/Brightness4";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 
@@ -88,6 +88,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Identity = ({
   auth,
+  config,
   logout,
   updateIdentity,
   deleteIdentity,
@@ -99,7 +100,10 @@ const Identity = ({
   const [menuAnchorEl, setMenuAnchorEl] = React.useState(null);
   const [popoverAnchorEl, setPopoverAnchorEl] = React.useState(null);
   const [selectedIdentity, setSelectedIdentity] = React.useState(null);
-  const [isDarkTheme, setDarkTheme] = React.useState(false);
+  const [refreshLoading, setRefreshLoading] = React.useState(false);
+  const [isDarkTheme, setDarkTheme] = React.useState(
+    config.themeName === DARK_THEME,
+  );
   React.useEffect(() => {
     getAllIdentity();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -119,9 +123,9 @@ const Identity = ({
   const handleThemeChange = () => {
     setDarkTheme(!isDarkTheme);
     if (!isDarkTheme) {
-      setTheme(darkTheme);
+      setTheme(darkTheme, DARK_THEME);
     } else {
-      setTheme(defaultTheme);
+      setTheme(defaultTheme, DEFAULT_THEME);
     }
   };
 
@@ -138,7 +142,7 @@ const Identity = ({
             className={classes.title}>
             My Identities
           </Typography>
-          <AccountCircleIcon />
+          <AccountCircleIcon fontSize="large" />
           <Typography
             component="h1"
             variant="h6"
@@ -166,7 +170,12 @@ const Identity = ({
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>
-          <IconButton onClick={() => getAllIdentity(true)}>
+          <IconButton
+            onClick={async () => {
+              setRefreshLoading(true);
+              await getAllIdentity(true);
+              setRefreshLoading(false);
+            }}>
             <RefreshIcon fontSize="large" color="primary" />
             <Typography color="primary" variant="h6">
               Refresh
@@ -174,7 +183,11 @@ const Identity = ({
           </IconButton>
           <Grid container spacing={2}>
             <Grid item xs={9}>
-              {fetchLoading && <CustomLinearProgress loading={fetchLoading} />}
+              {(fetchLoading || refreshLoading) && (
+                <CustomLinearProgress
+                  loading={fetchLoading || refreshLoading}
+                />
+              )}
               <Paper className={classes.paper}>
                 <Typography color="primary" align="center" variant="h6">
                   Your Current Identities
@@ -217,9 +230,10 @@ const Identity = ({
   );
 };
 
-const mapStateToProps = ({ auth, identity }) => ({
+const mapStateToProps = ({ auth, identity, config }) => ({
   auth,
   identity,
+  config,
 });
 
 export default connect(mapStateToProps, {
