@@ -8,6 +8,8 @@ import {
   Typography,
   Container,
   Switch,
+  Backdrop,
+  CircularProgress,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { Link, useHistory } from "react-router-dom";
@@ -17,8 +19,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm, Controller } from "react-hook-form";
 import { signup } from "../../actions/auth/index";
 import Brightness4Icon from "@material-ui/icons/Brightness4";
-import darkTheme from "../../theme/DarkTheme";
-import defaultTheme from "../../theme/DefaultTheme";
+import darkTheme, { DARK_THEME } from "../../theme/DarkTheme";
+import defaultTheme, { DEFAULT_THEME } from "../../theme/DefaultTheme";
 import { setTheme } from "../../actions/config";
 
 const Copyright = () => {
@@ -74,6 +76,10 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "row",
     justifyContent: "space-between",
   },
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: "#fff",
+  },
 }));
 
 const useSignupFormValidation = () => {
@@ -94,10 +100,13 @@ const useSignupFormValidation = () => {
   });
 };
 
-const Signup = ({ signup, setTheme }) => {
+const Signup = ({ signup, setTheme, config }) => {
   const classes = useStyles();
   const history = useHistory();
-  const [isDarkTheme, setDarkTheme] = React.useState(false);
+  const [isDarkTheme, setDarkTheme] = React.useState(
+    config.themeName === DARK_THEME,
+  );
+  const [isLoading, setLoading] = React.useState(false);
   const schema = useSignupFormValidation();
   const {
     handleSubmit,
@@ -112,13 +121,16 @@ const Signup = ({ signup, setTheme }) => {
       password: "",
     },
   });
-  const onSubmit = (data) => signup(data, history);
+  const onSubmit = (data) => {
+    setLoading(true);
+    signup(data, history);
+  };
   const handleThemeChange = () => {
     setDarkTheme(!isDarkTheme);
     if (!isDarkTheme) {
-      setTheme(darkTheme);
+      setTheme(darkTheme, DARK_THEME);
     } else {
-      setTheme(defaultTheme);
+      setTheme(defaultTheme, DEFAULT_THEME);
     }
   };
 
@@ -130,6 +142,9 @@ const Signup = ({ signup, setTheme }) => {
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
+        <Backdrop className={classes.backdrop} open={isLoading}>
+          <CircularProgress color="primary" />
+        </Backdrop>
         <form onSubmit={handleSubmit(onSubmit)} className={classes.form}>
           <Controller
             control={control}
@@ -268,4 +283,8 @@ const Signup = ({ signup, setTheme }) => {
   );
 };
 
-export default connect(null, { signup, setTheme })(Signup);
+const mapStateToProps = ({ config }) => ({
+  config,
+});
+
+export default connect(mapStateToProps, { signup, setTheme })(Signup);

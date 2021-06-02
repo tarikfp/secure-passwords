@@ -7,6 +7,7 @@ import {
   Typography,
   Container,
   Switch,
+  CircularProgress,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { Link, useHistory } from "react-router-dom";
@@ -16,8 +17,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm, Controller } from "react-hook-form";
 import { login } from "../../actions/auth";
 import { setTheme } from "../../actions/config";
-import defaultTheme from "../../theme/DefaultTheme";
-import darkTheme from "../../theme/DarkTheme";
+import defaultTheme, { DEFAULT_THEME } from "../../theme/DefaultTheme";
+import darkTheme, { DARK_THEME } from "../../theme/DarkTheme";
 import Brightness4Icon from "@material-ui/icons/Brightness4";
 import VpnKeyIcon from "@material-ui/icons/VpnKey";
 
@@ -73,6 +74,13 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "row",
     justifyContent: "space-between",
   },
+  buttonProgress: {
+    color: theme.palette.primary.main,
+    position: "absolute",
+    top: "43%",
+    left: "50%",
+    marginLeft: -12,
+  },
 }));
 
 const useLoginFormValidation = () => {
@@ -91,10 +99,13 @@ const useLoginFormValidation = () => {
   });
 };
 
-const Login = ({ login, setTheme }) => {
+const Login = ({ login, setTheme, config }) => {
   const classes = useStyles();
   const history = useHistory();
-  const [isDarkTheme, setDarkTheme] = React.useState(false);
+  const [isDarkTheme, setDarkTheme] = React.useState(
+    config.themeName === DARK_THEME,
+  );
+  const [isLoading, setLoading] = React.useState(false);
   const schema = useLoginFormValidation();
   const {
     handleSubmit,
@@ -107,13 +118,17 @@ const Login = ({ login, setTheme }) => {
       password: "",
     },
   });
-  const onSubmit = (data) => login(data, history);
+  const onSubmit = async (data) => {
+    setLoading(true);
+    await login(data, history);
+    setLoading(false);
+  };
   const handleThemeChange = () => {
     setDarkTheme(!isDarkTheme);
     if (!isDarkTheme) {
-      setTheme(darkTheme);
+      setTheme(darkTheme, DARK_THEME);
     } else {
-      setTheme(defaultTheme);
+      setTheme(defaultTheme, DEFAULT_THEME);
     }
   };
 
@@ -131,6 +146,7 @@ const Login = ({ login, setTheme }) => {
             name="email"
             render={({ field }) => (
               <TextField
+                disabled={isLoading}
                 variant="outlined"
                 margin="normal"
                 fullWidth
@@ -157,6 +173,7 @@ const Login = ({ login, setTheme }) => {
             name="password"
             render={({ field }) => (
               <TextField
+                disabled={isLoading}
                 variant="outlined"
                 margin="normal"
                 fullWidth
@@ -181,12 +198,16 @@ const Login = ({ login, setTheme }) => {
           />
           <Button
             type="submit"
+            disabled={isLoading}
             fullWidth
             variant="contained"
             color="primary"
             className={classes.submit}>
             Login
           </Button>
+          {isLoading && (
+            <CircularProgress size={24} className={classes.buttonProgress} />
+          )}
           <div className={classes.bottom}>
             <Link to="/signup" className={classes.signupNavigationLink}>
               <Typography variant="body2" color="primary">
@@ -211,4 +232,8 @@ const Login = ({ login, setTheme }) => {
   );
 };
 
-export default connect(null, { login, setTheme })(Login);
+const mapStateToProps = ({ config }) => ({
+  config,
+});
+
+export default connect(mapStateToProps, { login, setTheme })(Login);
