@@ -48,14 +48,14 @@ const useStyles = makeStyles((theme) => ({
 const useCreateIdentityFormValidation = () => {
   const formValidationRequiredMessage = "Required Field";
   const strongPasswordValidationMessage =
-    "Your Identity Password Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character";
+    "Your identity password must contain at least 8 characters, one uppercase, one lowercase, one number and one special character";
   return yup.object().shape({
     title: yup.string().required(formValidationRequiredMessage),
     password: yup
       .string()
       .required(formValidationRequiredMessage)
       .matches(
-        /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
+        /^.*(?=.{8,})((?=.*[!@#$%^&*()\-_=+{};:,<.>]){1})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$/,
         strongPasswordValidationMessage,
       ),
   });
@@ -102,7 +102,6 @@ const IdentityEditPopover = ({
   }, [anchorEl]);
   const onSubmit = (data) => {
     data.id = selectedIdentity._id;
-    data.salt = selectedIdentity.salt;
     updateIdentity(data);
     reset();
     handleClose();
@@ -135,7 +134,7 @@ const IdentityEditPopover = ({
                 variant="outlined"
                 margin="normal"
                 fullWidth
-                id="title"
+                id="_title"
                 label="Your Item Title"
                 name="title"
                 autoComplete="title"
@@ -166,7 +165,7 @@ const IdentityEditPopover = ({
                 variant="outlined"
                 margin="normal"
                 fullWidth
-                id="title"
+                id="website"
                 label="Website Url"
                 name="website"
                 autoComplete="website"

@@ -76,7 +76,7 @@ const useStyles = makeStyles((theme) => ({
 const useCreateIdentityFormValidation = () => {
   const formValidationRequiredMessage = "Required Field";
   const strongPasswordValidationMessage =
-    "Your Identity Password Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character";
+    "Your identity password must contain at least 8 characters, one uppercase, one lowercase, one number and one special character";
   return yup.object().shape({
     title: yup.string().required(formValidationRequiredMessage),
     website: yup.string().required(formValidationRequiredMessage),
@@ -85,7 +85,7 @@ const useCreateIdentityFormValidation = () => {
       .string()
       .required(formValidationRequiredMessage)
       .matches(
-        /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
+        /^.*(?=.{8,})((?=.*[!@#$%^&*()\-_=+{};:,<.>]){1})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$/,
         strongPasswordValidationMessage,
       ),
   });
@@ -152,8 +152,8 @@ const CreateIdentityCard = ({ createIdentity }) => {
                   variant="outlined"
                   margin="normal"
                   fullWidth
-                  id="title"
-                  label="Your Item Title"
+                  id="_title"
+                  label="Your Identity Title"
                   name="title"
                   autoComplete="title"
                   helperText={errors.title?.message}
@@ -183,8 +183,8 @@ const CreateIdentityCard = ({ createIdentity }) => {
                   variant="outlined"
                   margin="normal"
                   fullWidth
-                  id="title"
-                  label="Website Url"
+                  id="website"
+                  label="Your Website URL"
                   name="website"
                   autoComplete="website"
                   helperText={errors.website?.message}

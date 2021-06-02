@@ -44,6 +44,8 @@ export default function identityStateManagement(state = initialState, action) {
             ? {
                 ...item,
                 title: payload.title,
+                note: payload.note,
+                website: payload.website,
                 password: payload.password,
               }
             : item,
