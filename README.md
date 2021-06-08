@@ -175,7 +175,7 @@ Afterwards I get this response.
 ![image](https://user-images.githubusercontent.com/61876765/121261960-182de580-c8bc-11eb-8c2b-34f5fbc66f87.png)
 
 
-## Usage of Compare and Decryption Custom Functions In Login
+### Usage of Compare and Decryption Custom Functions In Login
 
 
 ```
@@ -282,6 +282,211 @@ const compare = (password, hash) => {
 
 
 ```
+
+### JsonWebToken
+
+At this moment, assuming user provided credentials properly and then will be logged in to the system. Meanwhile, in the auth app, I need to check on every refresh if the user is authenticated. Here comes JsonWebToken roles in. In login, we are creating payload object with user datas such as id, name, surname and email. Then I create a token with this payload and also with JWT secret which is critically important. Below is the example of code how the process went with creating jwt token. And let me also mention that I send this token to the client. Which is also important and will explain why I am sending it.
+
+
+```
+ const payload = {
+        user: {
+          id: user.id,
+          name: user.name,
+          surname: user.surname,
+          email: user.email,
+        },
+      };
+      const token = jwt.sign(
+        payload,
+        process.env.JWT_SECRET || config.get("jwtSecret"),
+        {
+          expiresIn: 480000,
+        }
+      );
+      await user.save();
+      res.status(200).json({ token });
+
+```
+
+I need to get this token in client. I send request with to my express endpoint. I get the token and right after I dispatch my redux action called as LOGIN_SUCCESS.
+What does LOGIN_SUCCESS do ? It saves the token to localStorage and also to redux state. And then, I send one more request to express api to identify logged in user. If the request succeeded, then I get the payload values about the user that I explained above. 
+
+```
+
+// How I get token from express api ?
+
+ const { email, password } = data;
+    const res = await Axios.post(`${serverURL}/api/user/login`, {
+      email,
+      password,
+    });
+    dispatch({
+      type: LOGIN_SUCCESS,
+      payload: res.data,
+    }); 
+    if (localStorage.token) {
+      setAuthToken(localStorage.token);
+    }
+    
+    // Sending request to express api to identify logged in user
+    
+    const res = await Axios.get(`${serverURL}/api/user/auth`);
+    dispatch({
+      type: USER_LOADED,
+      payload: res.data,
+    });
+    
+    
+    // What does LOGIN_SUCCESS do ?  
+    
+    case LOGIN_SUCCESS:
+      localStorage.setItem("token", payload.token);
+      return {
+        ...state,
+        token: payload.token,
+        isAuthenticated: true,
+        loading: false,
+      };
+    
+
+```
+
+Auth express endpoint
+
+```
+router.get("/auth", auth, async (req, res) => {
+  try {
+    const user = req.user;
+    res.status(200).json(user);
+  } catch (err) {
+    res.status(500).send();
+  }
+});
+
+```
+
+From now on, every request I will do in auth app, will be checked by the middleware in express api. This means if user is not authenticated, will not be able to use the system features. In case of user is not authenticated, will be logged out of the system automatically. And will not be able to access auth app.
+
+```
+
+// Express auth middleware
+
+module.exports = async (req, res, next) => {
+  // Get token from header
+  const token = req.header("x-auth-token");
+  // Handle if token not provided
+  if (!token) {
+    return res.status(401).json({ msg: "No token,authorization denied" });
+  }
+  // Verify Token
+  try {
+    const decoded = jwt.decode(
+      token,
+      process.env.JWT_SECRET || config.get("jwtSecret")
+    );
+    const { id, name, surname, email } = decoded.user;
+    let user = await User.findById(id);
+    if (!user) {
+      return res.status(500).json({
+        errors: [
+          {
+            msg: "Server Error",
+          },
+        ],
+      });
+    }
+    const userData = {
+      id,
+      name,
+      surname,
+      email,
+    };
+    req.user = userData;
+    next();
+  } catch (err) {
+    res.status(401).json({ msg: "Token is not valid" });
+  }
+};
+
+
+```
+
+You might be asking how user will be logged out of the system automatically. It will happen with the redux state. As I told before, I was updating the redux state with login actions. So whenever user is not authenticated, isAuthenticated will be set to false. You may ask again how ? 
+
+So basically, I do load the user by sending api request to my express endpoint. If I send request while I have no token in my axios headers, then request will fail and it will go to catch block of function, which triggers AUTH_ERROR redux action. When AUTH_ERROR action calles, then isAuthenticated will be set false and other related fields will be resetted as well. 
+
+
+```
+// loadUser function's catch block
+
+ } catch (err) {
+    const errors = err.response?.data?.errors;
+    if (errors) {
+      errors.forEach((error) =>
+        toast.error(error.msg, { position: "top-center" }),
+      );
+    }
+    dispatch({
+      type: AUTH_ERROR,
+    });
+  }
+
+```
+
+
+```
+// AUTH_ERROR redux state
+
+ case AUTH_ERROR:
+      localStorage.removeItem("token");
+      return {
+        ...state,
+        token: null,
+        user: null,
+        isAuthenticated: false,
+        loading: false,
+      };
+
+```
+
+
+Okay, I set the isAuthenticated to false. Good progress but not enough. I also need to configure some private route in client so that if user is not authenticated, should go to login page.
+Here is how I've done it in React client side. I do check the redux state and send user to the login page if not authenticated. 
+
+
+```
+
+const PrivateRoute = ({
+  component: Component,
+  auth: { user, isAuthenticated },
+  ...rest
+}) => {
+  if (localStorage.token) {
+    setAuthToken(localStorage.token);
+  }
+  React.useEffect(() => {
+    store.dispatch(loadUser());
+  }, []);
+  return (
+    <Route
+      {...rest}
+      render={(props) =>
+        isAuthenticated === false && user === null ? (
+          <Redirect to="/" />
+        ) : (
+          <Component {...props} />
+        )
+      }
+    />
+  );
+};
+
+
+```
+
+
+
 
 
 
