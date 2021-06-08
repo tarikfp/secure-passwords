@@ -547,6 +547,11 @@ const hashedData = encrypt(password);
 
 ```
 
+Update Identity Example From The App
+
+![image](https://user-images.githubusercontent.com/61876765/121270082-ad83a680-c8c9-11eb-9e43-b02adbd7b551.png)
+
+
 
 #### Deleting Identity
 
