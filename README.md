@@ -627,7 +627,7 @@ router.get("/identity", [auth, bruteforce.prevent], async (req, res) => {
 
 ## Conclusion
 
-The secure passwords app is a basic but powerful app that I created using [MERN stack](https://www.mongodb.com/mern-stack). 
+The secure passwords app is a basic but powerful app for securing passwords that I tried to implement using [MERN stack](https://www.mongodb.com/mern-stack). 
 
 There will be improvements in near future.
 
