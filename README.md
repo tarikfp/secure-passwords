@@ -520,9 +520,7 @@ password: yup
 
 Examples of creating identity with strong password and weak password.
 
-![image](https://user-images.githubusercontent.com/61876765/121268370-7d86d400-c8c6-11eb-9419-89ebe9b1b839.png)
-
-![image](https://user-images.githubusercontent.com/61876765/121268923-8c21bb00-c8c7-11eb-9414-5468e3a38720.png)
+![image](https://user-images.githubusercontent.com/61876765/121268370-7d86d400-c8c6-11eb-9419-89ebe9b1b839.png)   ![image](https://user-images.githubusercontent.com/61876765/121268923-8c21bb00-c8c7-11eb-9414-5468e3a38720.png)
 
 
 
