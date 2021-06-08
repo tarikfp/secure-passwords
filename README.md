@@ -95,9 +95,35 @@ If the user provides all fields and passes this phase, then I check if there is 
 
 ### Login
 
-User has now registered, then is able to login to the system. Similiar structure here again. Checking req.body fields with express-validator. And the rest of them is standart login logics.
+User has now registered, then is able to login to the system. Similiar structure here again. Checking req.body fields with express-validator. And the rest of them is standart login logics. 
+
+### Brute Force Attacks
+
+What is Brute Force Attacks?
+
+Lets take a look at what does wikipedia says about brute force attacks.
+
+> <em>In cryptography, a brute-force attack consists of an attacker submitting many passwords or passphrases with the hope of eventually guessing a combination correctly. The attacker systematically checks all possible passwords and passphrases until the correct one is found. Alternatively, the attacker can attempt to guess the key which is typically created from the password using a key derivation function. This is known as an exhaustive key search.</em>
+
+One thing should be mentioned in login is that, I used express-brute package to prevent unlimited requests. This package provides a brute-force protection middleware for express routes that rate-limits incoming requests, increasing the delay with each request in a fibonacci-like sequence. 
+
+I set some configuration in the login using express-brute. 20000 ms for minWait and 6 for freeRetries. But what are they ?
+
+<strong>minWait</strong>: The initial wait time (in milliseconds) after the user runs out of retries
+
+<strong>freeRetries</strong>:  The number of retires the user has before they need to start waiting
+
 
 ```
+const ExpressBrute = require("express-brute");
+const store = new ExpressBrute.MemoryStore();
+const bruteforce = new ExpressBrute(store, {
+  minWait: 20000, // 20 seconds
+  freeRetries: 6,
+});
+const { encrypt, compare } = require("../custom-services/Encryption");
+
+
 router.post(
   "/login",
   bruteforce.prevent,
@@ -192,6 +218,8 @@ const compare = (password, hash) => {
 
 
 ```
+
+
 
 
 
