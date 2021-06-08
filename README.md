@@ -6,9 +6,13 @@
 
 ## Introduction
 
-This is MERN app. MERN stands for MongoDB, Express, React, Node.
+This is [MERN](https://www.mongodb.com/mern-stack) app. MERN stands for MongoDB, Express, React, Node.
 
 In order to use the app, first user needs to register to the system. While registering, user needs to provide name, surname, email and password.
+
+
+
+## Secure Your Passwords
 
 ### Register
 
@@ -618,6 +622,18 @@ router.get("/identity", [auth, bruteforce.prevent], async (req, res) => {
 ```
 
 
+## Conclusion
+
+The secure passwords app is a basic but powerful app that I created using [MERN stack](https://www.mongodb.com/mern-stack). 
+
+There will be improvements in near future.
+
+
+## Bug Report
+
+I would like to get bug crash reports to my personal email.
+
+tarikpnr147@gmail.com
 
 
 
