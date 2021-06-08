@@ -113,6 +113,70 @@ I set some configuration in the login using express-brute. 20000 ms for minWait 
 
 <strong>freeRetries</strong>:  The number of retires the user has before they need to start waiting
 
+```
+
+// Handling brute force response
+
+export const handleManyRequest = (err) => {
+  if (err?.data?.error?.text === "Too many requests in this time frame.") {
+    return toast.error(
+      "TOO MANY REQUESTS RECEIVED. PLEASE WAIT SOME TIME THEN TRY AGAIN",
+      {
+        position: "top-center",
+      },
+    );
+  }
+};
+
+
+
+// Login User with redux action
+
+export const login = (data, history) => async (dispatch) => {
+  try {
+    const { email, password } = data;
+    const res = await Axios.post(`${serverURL}/api/user/login`, {
+      email,
+      password,
+    });
+    dispatch({
+      type: LOGIN_SUCCESS,
+      payload: res.data,
+    });
+    dispatch(loadUser());
+    history.push("/identity");
+    return res;
+  } catch (err) {
+    handleManyRequest(err.response);
+    const errors = err.response?.data?.errors;
+    if (errors) {
+      errors.forEach((error) =>
+        toast.error(error.msg, { position: "top-center", toastId: "login" }),
+      );
+    }
+    dispatch({
+      type: LOGIN_FAIL,
+    });
+  }
+};
+
+
+```
+
+
+Below is a live example in the app. I tried to login with wrong credentials couple of times. 
+Afterwards I get this response.
+
+![image](https://user-images.githubusercontent.com/61876765/121262387-b4f08300-c8bc-11eb-8612-2968d9bad9a8.png)
+
+![image](https://user-images.githubusercontent.com/61876765/121262401-bfab1800-c8bc-11eb-8409-57850720940c.png)
+
+
+![image](https://user-images.githubusercontent.com/61876765/121261960-182de580-c8bc-11eb-8c2b-34f5fbc66f87.png)
+
+
+## Usage of Compare and Decryption Custom Functions In Login
+
 
 ```
 const ExpressBrute = require("express-brute");
@@ -121,7 +185,7 @@ const bruteforce = new ExpressBrute(store, {
   minWait: 20000, // 20 seconds
   freeRetries: 6,
 });
-const { encrypt, compare } = require("../custom-services/Encryption");
+const { compare } = require("../custom-services/Encryption");
 
 
 router.post(
