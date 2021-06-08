@@ -485,7 +485,134 @@ const PrivateRoute = ({
 
 ```
 
+### Identities
 
+Identity is the main feauture of this app. Users can view, create, edit and delete their own identites. 
+
+An example of identity from mongodb is showned below as screenshot.
+
+![image](https://user-images.githubusercontent.com/61876765/121266660-9a6dd800-c8c3-11eb-9181-0e0284f1c466.png)
+
+
+
+### More About Identities
+
+#### Strong password
+
+Identities are important. So while creating it, I need to create strong password for it. In order to achieve this, I used yup validation and regular expression while creating identity in a form. Yup is just a JavaScript schema builder for value parsing and validation. The way I used regular expression is for creating such strong passwords. Remember, passwords are more stronger with special characters and longer passwords means stronger as well. 
+
+```
+const strongPasswordValidationMessage =
+    "Your identity password must contain at least 8 characters, one uppercase, one lowercase, one number and one special character";
+    
+password: yup
+      .matches(
+        /^.*(?=.{8,})((?=.*[!@#$%^&*()\-_=+{};:,<.>]){1})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$/,
+        strongPasswordValidationMessage,
+      ),
+      
+```
+
+
+An example of creating identity in the app.
+
+![image](https://user-images.githubusercontent.com/61876765/121268370-7d86d400-c8c6-11eb-9419-89ebe9b1b839.png)
+
+
+
+### Creating - Updating Identity
+
+A single identity has title, website, note, password fields. 
+I save the password of identity in the same way I did in register. Which is with my custom encrypt function. That's why I will not going to mention about it again since it would be over explaining. I am using the same logic when I am updating the identity. And obviously, I need the add owner of identity in my express api so that whenever I fetch them from db, I can filter out them.
+
+```
+
+//  example of create identity code section
+
+const hashedData = encrypt(password);
+    const identity = new Identity({
+      title,
+      website,
+      note,
+      owner: req.user.id,
+      password: hashedData.password,
+      iv: hashedData.iv,
+    });
+    await identity.save();
+
+```
+
+
+#### Deleting Identity
+
+User can also delete identity if needed. 
+
+```
+// Delete identity
+
+router.delete("/:id", [auth, bruteforce.prevent], async (req, res) => {
+  try {
+    const id = req.params.id;
+    let foundIdentity = await Identity.findOne({ _id: id });
+    if (!foundIdentity) {
+      return res.status(404).json({ errors: [{ msg: "No Identity Found !" }] });
+    }
+    await Identity.findOneAndDelete({ _id: id });
+    return res.status(200).send();
+  } catch (err) {
+    return res.status(500).send();
+  }
+});
+
+```
+
+
+### Fetching Identities
+
+I do fetch the identities with the auth user id. In beginning, I did create a auth middleware so that I can get auth user datas in my express endpoints. Thanks to auth middleware, now I am able to get auth user id. Which is ``req.user.id``.
+
+But one thing is critical to mention here, that is I used brute force middleware in these routes as well. 
+
+I put a refresh feature to make things is easier. Instead of refreshing whole page with F5, user can refresh identities list by clicking one button. 
+But it has a limits as well. Just like in login page. User can not send so many requests at once.
+
+![image](https://user-images.githubusercontent.com/61876765/121268557-dfdfd480-c8c6-11eb-9660-910b052d58c5.png)
+
+
+![image](https://user-images.githubusercontent.com/61876765/121268584-ecfcc380-c8c6-11eb-9e85-e82ffc694c96.png)
+
+
+![image](https://user-images.githubusercontent.com/61876765/121268732-27fef700-c8c7-11eb-84e4-1fe9f9f93291.png)
+
+
+Similiar process going on here as well in order to block brute force attacks.
+
+
+
+```
+
+// Get all identities
+
+router.get("/identity", [auth, bruteforce.prevent], async (req, res) => {
+  try {
+    const identities = await Identity.find({ owner: req.user.id });
+    if (identities.length > 0) {
+      // Return plain password in order to show it on client
+      identities.map(
+        (identity) =>
+          (identity.password = decrypt({
+            iv: identity.iv,
+            password: identity.password,
+          }))
+      );
+    }
+    return res.status(200).json({ identities });
+  } catch (err) {
+    return res.status(500).send();
+  }
+});
+
+```
 
 
 
