@@ -19,6 +19,7 @@ import {
   updateIdentity,
   deleteIdentity,
   getAllIdentity,
+  clearAllIdentities,
 } from "../../actions/identity";
 import IdentityItem from "./IdentityItem";
 import CreateIdentityCard from "./CreateIdentityCard";
@@ -93,6 +94,7 @@ const Identity = ({
   updateIdentity,
   deleteIdentity,
   getAllIdentity,
+  clearAllIdentities,
   setTheme,
   identity: { loading: fetchLoading, items },
 }) => {
@@ -106,6 +108,7 @@ const Identity = ({
   );
   React.useEffect(() => {
     getAllIdentity();
+    return () => clearAllIdentities();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const handleMenuClose = () => {
@@ -241,5 +244,6 @@ export default connect(mapStateToProps, {
   getAllIdentity,
   deleteIdentity,
   updateIdentity,
+  clearAllIdentities,
   setTheme,
 })(Identity);

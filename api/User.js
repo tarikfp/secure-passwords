@@ -7,7 +7,10 @@ const User = require("../models/User");
 const auth = require("../middleware/auth");
 const ExpressBrute = require("express-brute");
 const store = new ExpressBrute.MemoryStore();
-const bruteforce = new ExpressBrute(store, { minWait: 10000 });
+const bruteforce = new ExpressBrute(store, {
+  minWait: 20000, // 20 seconds
+  freeRetries: 6,
+});
 const { encrypt, compare } = require("../custom-services/Encryption");
 
 router.post(

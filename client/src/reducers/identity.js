@@ -5,6 +5,7 @@ import {
   CREATE_IDENTITY,
   SET_LOADING,
   UPDATE_IDENTITY,
+  CLEAR_ALL_IDENTITES,
 } from "../actions/identity/types";
 
 const initialState = {
@@ -62,6 +63,12 @@ export default function identityStateManagement(state = initialState, action) {
       return {
         ...state,
         loading: true,
+      };
+    case CLEAR_ALL_IDENTITES:
+      return {
+        ...state,
+        items: [],
+        item: null,
       };
     default:
       return state;

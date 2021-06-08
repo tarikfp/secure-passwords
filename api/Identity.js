@@ -3,7 +3,10 @@ const router = express.Router();
 const Identity = require("../models/Identity");
 const ExpressBrute = require("express-brute");
 const store = new ExpressBrute.MemoryStore();
-const bruteforce = new ExpressBrute(store, { minWait: 10000 });
+const bruteforce = new ExpressBrute(store, {
+  minWait: 10000, // 10 seconds
+  freeRetries: 9,
+});
 const auth = require("../middleware/auth");
 const { encrypt, decrypt } = require("../custom-services/Encryption");
 
@@ -12,7 +15,10 @@ const { encrypt, decrypt } = require("../custom-services/Encryption");
 router.post("/", [auth, bruteforce.prevent], async (req, res) => {
   try {
     const { password, title, website, note } = req.body;
-    const isIdentityExists = await Identity.findOne({ title });
+    const isIdentityExists = await Identity.findOne({
+      owner: req.user.id,
+      title,
+    });
     if (isIdentityExists) {
       return res.status(404).json({
         errors: [{ msg: "Identity already exists with the same title !" }],
@@ -23,6 +29,7 @@ router.post("/", [auth, bruteforce.prevent], async (req, res) => {
       title,
       website,
       note,
+      owner: req.user.id,
       password: hashedData.password,
       iv: hashedData.iv,
     });
@@ -90,7 +97,7 @@ router.delete("/:id", [auth, bruteforce.prevent], async (req, res) => {
 
 router.get("/identity", [auth, bruteforce.prevent], async (req, res) => {
   try {
-    const identities = await Identity.find();
+    const identities = await Identity.find({ owner: req.user.id });
     if (identities.length > 0) {
       // Return plain password in order to show it on client
       identities.map(

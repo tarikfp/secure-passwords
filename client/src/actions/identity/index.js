@@ -6,6 +6,7 @@ import {
   GET_IDENTITY,
   IDENTITY_ACTION_FAIL,
   SET_LOADING,
+  CLEAR_ALL_IDENTITES,
 } from "./types";
 import Axios from "../../services/axios/index";
 import { toast } from "react-toastify";
@@ -158,6 +159,14 @@ export const getIdentity = (data) => async (dispatch) => {
       type: IDENTITY_ACTION_FAIL,
     });
   }
+};
+
+// CLear All Identites
+
+export const clearAllIdentities = () => async (dispatch) => {
+  dispatch({
+    type: CLEAR_ALL_IDENTITES,
+  });
 };
 
 // Refresh Loading

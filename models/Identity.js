@@ -22,6 +22,10 @@ const IdentitySchema = new Schema({
     type: String,
     required: true,
   },
+  owner: {
+    type: Schema.Types.ObjectId,
+    ref: "users",
+  },
 });
 
-module.exports = Identity = mongoose.model("identity", IdentitySchema);
+module.exports = Identity = mongoose.model("identities", IdentitySchema);
