@@ -1,8 +1,8 @@
 # Secure Passwords App
 
-## Quick Access
+## Direct Link 
 
-### https://tariksecurepassword.netlify.app/
+### https://tariksecurepasswords.netlify.app/
 
 ## Introduction
 
