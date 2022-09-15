@@ -3,9 +3,6 @@
 ## Demonstration Video
 https://www.youtube.com/watch?v=Y0eGR2lwuTE
 
-Tarık Fatih PINARCI
-
-20160808001
 
 ## Direct Link 
 
